@@ -15,6 +15,7 @@ jobs:
             - run: "npm run build:prod"
             - uses: FirebaseExtended/action-hosting-deploy@v0
               with:
+                  entryPoint: ./app
                   repoToken: "${{ secrets.GITHUB_TOKEN }}"
                   firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_LEARN_COUNTRY_QUIZ_9A68D }}"
                   projectId: learn-country-quiz-9a68d
