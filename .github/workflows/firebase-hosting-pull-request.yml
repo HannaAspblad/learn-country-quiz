@@ -9,7 +9,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - working-directory: ./app
+              working-directory: ./app
             - run: "npm run build:prod"
             - uses: FirebaseExtended/action-hosting-deploy@v0
               with:
