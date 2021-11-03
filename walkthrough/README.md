@@ -24,7 +24,7 @@ Done | Step | Grading
 ***NOTE:** As you go though the exercie steps, make sure to update this file by replacing the gray squares with green checkboxes so that company management can follow along and see how far you've gotten.*
 
 The url to our site is:
-[Post your url here](https://learn-country-quiz-9a68d.web.app/)
+[Country Quiz App](https://learn-country-quiz-9a68d.web.app/)
 
 
 ## Examinations
