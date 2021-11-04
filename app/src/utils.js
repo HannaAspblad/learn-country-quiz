@@ -1,6 +1,8 @@
+import countries from "./countries";
+
 
 const hardCodedQuestions = {
-	1: {
+	 1: {
 		alternatives: {
 			1: 'swe',
 			2: 'fra',
@@ -19,9 +21,36 @@ const hardCodedQuestions = {
 		correct: 'fra',
 	}
 }
+const quizQuestions = {}
+
+const generateQuestion = () => {
+	let countriesArr = Object.keys(countries);
+    const randomizeCountries = [];
+    for (let i = 0; i < 54; i++) {
+        let newCountries = countriesArr[Math.floor(Math.random() * 200)].toLowerCase();
+        if (randomizeCountries.includes(newCountries)) {
+            newCountries = countriesArr[Math.floor(Math.random() * 200)].toLowerCase();
+        }
+        randomizeCountries.push(newCountries);
+    }
+	const currentCountries = [randomizeCountries[0], randomizeCountries[1], randomizeCountries[2], randomizeCountries[3]]
+	const question = {}
+	question.correct = currentCountries[Math.floor(Math.random() * currentCountries.length)]
+	question.alternatives = {}
+	for(let i = 1; i <= currentCountries.length; i++){
+		!currentCountries[i] ? question.alternatives[i] = currentCountries[0] : question.alternatives[i] = currentCountries[i]
+	}
+	return question
+}
+
+for(let i = 1; i <= 5; i++){
+	quizQuestions[i] = generateQuestion()
+}
 
 export const createGame = () => {
-	const generatedQuestions = hardCodedQuestions
+	let generatedQuestions
+	JSON.parse(localStorage.getItem('improvedQuestions')) ? generatedQuestions = quizQuestions : generatedQuestions = hardCodedQuestions
+	//const generatedQuestions = hardCodedQuestions
 	return {
 		currentQuestion: 1,
 		questions: generatedQuestions,

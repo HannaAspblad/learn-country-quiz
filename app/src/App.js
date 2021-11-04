@@ -373,6 +373,12 @@ const Tie = ({ you, opponent }) => {
 };
 
 const Setup = () => {
+
+	const changeQuestionState = () => {
+        setQuestionBtn(!scoringBtn);
+        localStorage.setItem("improvedQuestions", !JSON.parse(localStorage.getItem("improvedQuestions")));
+    }
+
     const changeScoringState = () => {
         setScoringBtn(!scoringBtn);
         localStorage.setItem(
@@ -394,6 +400,7 @@ const Setup = () => {
             !JSON.parse(localStorage.getItem("improvedFlagging"))
         );
     };
+	const [questionBtn, setQuestionBtn] = useState(JSON.parse(localStorage.getItem('improvedQuestions')))
     const [scoringBtn, setScoringBtn] = useState(
         JSON.parse(localStorage.getItem("improvedScoring"))
     );
@@ -422,6 +429,12 @@ const Setup = () => {
                 <h3 style={{ margin: 0 }}>Extra Flags</h3>
                 <button onClick={() => changeExtraFlagsState()}>
                     {extraFlagsBtn ? "ON" : "OFF"}
+                </button>
+            </div>
+			<div className="extra-questions" style={{ display: "flex" }}>
+                <h3 style={{ margin: 0 }}>Generated questions</h3>
+                <button onClick={() => changeQuestionState()}>
+                    {questionBtn ? "ON" : "OFF"}
                 </button>
             </div>
             <div className="setup-footer">
