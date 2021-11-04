@@ -12,7 +12,7 @@ Done | Step | Grading
 ✅ | 1 - [Set up a pipeline](1-pipeline.md) | **G**
 ✅ | 2 - [Basic feature flagging](2-basic-feature-flagging.md) | **G**
 ✅ | 3 - [Small improvements](3-small-improvements.md) | **G**
-⬜ | 4 - [Improved feature flagging](4-improved-feature-flagging.md) | **G**
+✅ | 4 - [Improved feature flagging](4-improved-feature-flagging.md) | **G**
 ⬜ | 5 - [Randomized order and GDPR](5-randomized-order.md) | **G**
 ⬜ | 6 - [Add Google analytics](6-google-analytics.md) | **G**
 ⬜ | 7 - [Advanced feature flags](7-advanced-feature-flags.md) | **VG**
