@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import * as R from 'ramda'
 import {Link, Route, useLocation} from "wouter"
 import { customAlphabet } from 'nanoid'
@@ -34,7 +34,8 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 const db = getDatabase(app);
-
+//feature flags
+localStorage.setItem('improvedScoring', false)
 
 function App() {
 
@@ -144,6 +145,7 @@ const GamePage = ({gameId, playerId}) => {
 
 const QuestionPage = ({gameId, playerId}) => {
 	const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`))
+	const [improvedScoring, setImprovedScoring] = useState(JSON.parse(localStorage.getItem('improvedScoring')))
 
 	if (loading) return <div className="fw6 fs5">Loading...</div>
 	const game = snapshot.val()
@@ -154,7 +156,6 @@ const QuestionPage = ({gameId, playerId}) => {
 	const question = game.questions[`${game.currentQuestion}`]
 
 	if (!question) return 'Loading...'
-
 	const answer = async (countryCode) => {
 		if (question.fastest) return
 
@@ -162,6 +163,8 @@ const QuestionPage = ({gameId, playerId}) => {
 		updates[`/games/${gameId}/questions/${game.currentQuestion}/fastest`] = {player: playerId, answer: countryCode}
 		if (countryCode == question.correct) {
 			updates[`/games/${gameId}/score/${youKey}`] = game.score[youKey] + 1
+		} else if (countryCode !== question.correct && improvedScoring == true) {
+			updates[`/games/${gameId}/score/${youKey}`] = game.score[youKey] - 1
 		}
 		await update(ref(db), updates)
 
