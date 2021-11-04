@@ -10,7 +10,7 @@ Done | Step | Grading
 --- | --- | ---
 ✅ | 0 - Instructions | -
 ✅ | 1 - [Set up a pipeline](1-pipeline.md) | **G**
-⬜ | 2 - [Basic feature flagging](2-basic-feature-flagging.md) | **G**
+✅ | 2 - [Basic feature flagging](2-basic-feature-flagging.md) | **G**
 ⬜ | 3 - [Small improvements](3-small-improvements.md) | **G**
 ⬜ | 4 - [Improved feature flagging](4-improved-feature-flagging.md) | **G**
 ⬜ | 5 - [Randomized order and GDPR](5-randomized-order.md) | **G**
