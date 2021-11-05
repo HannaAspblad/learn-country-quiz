@@ -3,11 +3,14 @@
 
 name: Deploy to Firebase Hosting on merge
 "on":
+    workflow_run:
+        workflows: ["Node.js CI"]
+        types: [completed]
     push:
         branches:
             - main
 jobs:
-    build_and_deploy:
+    on-success:
         runs-on: ubuntu-latest
         defaults:
             run:
