@@ -13,7 +13,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./app
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -24,6 +26,7 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
+        entryPoint: ./app
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
