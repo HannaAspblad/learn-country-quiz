@@ -12,6 +12,7 @@ name: Deploy to Firebase Hosting on merge
 jobs:
     on-success:
         runs-on: ubuntu-latest
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         defaults:
             run:
                 working-directory: ./app
@@ -28,6 +29,7 @@ jobs:
                   projectId: learn-country-quiz-9a68d
     on-failure:
         runs-on: ubuntu-latest
+        if: ${{ github.event.workflow_run.conclusion == 'failure' }}
         defaults:
             run:
                 working-directory: ./app
