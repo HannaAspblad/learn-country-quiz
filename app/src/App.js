@@ -85,7 +85,12 @@ const StartPage = () => {
             await update(ref(db), updates);
             setLocation(`/game/${gameId}/1`);
         } else {
-            const game = utils.createGame();
+            let game = null;
+            if (JSON.parse(localStorage.getItem("improvedQuestions"))) {
+                game = utils.createGame("improvedQuestions");
+            } else {
+                game = utils.createGame("standardQuestion");
+            }
             const updates = {};
             updates["/nextGame"] = null;
             updates[`/games/${nextGame}`] = game;
@@ -373,11 +378,13 @@ const Tie = ({ you, opponent }) => {
 };
 
 const Setup = () => {
-
-	const changeQuestionState = () => {
+    const changeQuestionState = () => {
         setQuestionBtn(!scoringBtn);
-        localStorage.setItem("improvedQuestions", !JSON.parse(localStorage.getItem("improvedQuestions")));
-    }
+        localStorage.setItem(
+            "improvedQuestions",
+            !JSON.parse(localStorage.getItem("improvedQuestions"))
+        );
+    };
 
     const changeScoringState = () => {
         setScoringBtn(!scoringBtn);
@@ -400,7 +407,9 @@ const Setup = () => {
             !JSON.parse(localStorage.getItem("improvedFlagging"))
         );
     };
-	const [questionBtn, setQuestionBtn] = useState(JSON.parse(localStorage.getItem('improvedQuestions')))
+    const [questionBtn, setQuestionBtn] = useState(
+        JSON.parse(localStorage.getItem("improvedQuestions"))
+    );
     const [scoringBtn, setScoringBtn] = useState(
         JSON.parse(localStorage.getItem("improvedScoring"))
     );
@@ -431,7 +440,7 @@ const Setup = () => {
                     {extraFlagsBtn ? "ON" : "OFF"}
                 </button>
             </div>
-			<div className="extra-questions" style={{ display: "flex" }}>
+            <div className="extra-questions" style={{ display: "flex" }}>
                 <h3 style={{ margin: 0 }}>Generated questions</h3>
                 <button onClick={() => changeQuestionState()}>
                     {questionBtn ? "ON" : "OFF"}
