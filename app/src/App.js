@@ -85,8 +85,8 @@ const StartPage = () => {
             await update(ref(db), updates);
             setLocation(`/game/${gameId}/1`);
         } else {
-            let game = null;
-            if (JSON.parse(localStorage.getItem("improvedQuestions"))) {
+            let game = null
+            if (JSON.parse(localStorage.getItem("improvedQuestions")) == true) {
                 game = utils.createGame("improvedQuestions");
             } else {
                 game = utils.createGame("standardQuestion");
@@ -379,7 +379,7 @@ const Tie = ({ you, opponent }) => {
 
 const Setup = () => {
     const changeQuestionState = () => {
-        setQuestionBtn(!scoringBtn);
+        setQuestionBtn(!questionBtn);
         localStorage.setItem(
             "improvedQuestions",
             !JSON.parse(localStorage.getItem("improvedQuestions"))
@@ -394,14 +394,14 @@ const Setup = () => {
         );
     };
     const changeTieScreenState = () => {
-        setTieScreenBtn(!scoringBtn);
+        setTieScreenBtn(!tieScreenBtn);
         localStorage.setItem(
             "improvedResult",
             !JSON.parse(localStorage.getItem("improvedResult"))
         );
     };
     const changeExtraFlagsState = () => {
-        setExtraFlagsBtn(!scoringBtn);
+        setExtraFlagsBtn(!extraFlagsBtn);
         localStorage.setItem(
             "improvedFlagging",
             !JSON.parse(localStorage.getItem("improvedFlagging"))
