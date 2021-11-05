@@ -2,6 +2,7 @@
 
 # Country Quiz
 [![Deploy to Firebase Hosting on merge](https://github.com/HannaAspblad/learn-country-quiz/actions/workflows/firebase-hosting-merge.yml/badge.svg?branch=main)](https://github.com/HannaAspblad/learn-country-quiz/actions/workflows/firebase-hosting-merge.yml)
+
 [![Node.js CI](https://github.com/HannaAspblad/learn-country-quiz/actions/workflows/node.js.yml/badge.svg)](https://github.com/HannaAspblad/learn-country-quiz/actions/workflows/node.js.yml)
 
 This is an exercise to learn about Continious Deployment, trunk based development and feature flags. Divide into teams of 3 and come up with a team name.
