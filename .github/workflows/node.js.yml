@@ -29,7 +29,6 @@ jobs:
                     ~/cache
                     !~/cache/exclude
                     key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-            - with:
                 node-version: ${{ matrix.node-version }}
                 cache: "npm"
             - run: npm ci
