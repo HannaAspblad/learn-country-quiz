@@ -6,9 +6,6 @@ name: Deploy to Firebase Hosting on merge
     workflow_run:
         workflows: ["Node.js CI"]
         types: [completed]
-    push:
-        branches:
-            - main
 jobs:
     on-success:
         runs-on: ubuntu-latest
@@ -26,3 +23,11 @@ jobs:
                   firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_LEARN_COUNTRY_QUIZ_9A68D }}"
                   channelId: live
                   projectId: learn-country-quiz-9a68d
+    on-failure:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ./app
+        steps:
+            - uses: actions/checkout@v2
+            - run: echo "test failed, cancelled deployment"
