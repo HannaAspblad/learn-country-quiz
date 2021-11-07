@@ -101,3 +101,42 @@ code {
 .h17 { height: 7.0rem; }
 
 .tac { text-align: center; }
+
+
+
+/*egna styles*/
+
+.grid-container{
+	min-width: 80vw;
+	height: auto;
+	/* border: 1px solid black; */
+}
+
+.grid-item{
+  	padding: 20px;
+  	font-size: 25px;
+	/* border: 1px solid grey; */
+  	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.grid-item h2 {
+	font-size: 25px;
+}
+.grid-item > button{
+	height: 50%; 
+	width: 60px; 
+	border-radius: 5px; 
+	border: none
+}
+
+.color-palette{
+	display: flex;
+	justify-content: space-evenly;
+}
+.palette-part{
+	width: 40px;
+	height: 40px;
+	border: 1px solid black;
+}
