@@ -514,142 +514,142 @@ const SetupAdvanced = () => {
 
 
 	return (
-		<div class="wrapper-advanced-settings">
+		<div className="wrapper-advanced-settings">
 
-<div class="grid-container" style={{display: 'grid', gridTemplateColumns: 'auto auto auto auto auto auto', padding: '10px'}}>
-  <div class="grid-item"></div>
-  <div class="grid-item">
+<div className="grid-container" style={{display: 'grid', gridTemplateColumns: 'auto auto auto auto auto auto', padding: '10px'}}>
+  <div className="grid-item"></div>
+  <div className="grid-item">
   	<h2>Grid</h2>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   	<h2>Latest Games</h2>
   </div>  
-  <div class="grid-item">
+  <div className="grid-item">
   	<h2>Countdown</h2>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   	<h2>NumQuestions</h2>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   	<h2>Background</h2>
   </div>  
-  <div class="grid-item">
+  <div className="grid-item">
   	<h2>Alpha</h2>
   </div>
-  <div class="grid-item" style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+  <div className="grid-item" style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 	<button onClick={changeGridAlpha} style={!gridAlpha?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}} >
 		{gridAlpha? 'ON' : 'OFF'}
 	</button>
 		
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
 	<button onClick={changeLGAlpha} style={!LGAlpha?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 			{LGAlpha? 'ON' : 'OFF'}
 	</button>
   </div>
 
-  <div class="grid-item">
+  <div className="grid-item">
   	<button onClick={changeCountdownAlpha} style={!countdownAlpha?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{countdownAlpha? 'ON' : 'OFF'}
 	</button>
 	</div>  
-  <div class="grid-item">
+  <div className="grid-item">
   <button onClick={changeNumQuestionsAlpha} style={!numQuestionsAlpha?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{numQuestionsAlpha? 'ON' : 'OFF'}
 	</button></div>  
-  <div class="grid-item">
-	  <div class="color-palette">
-		<div class="palette-part" style={{background: 'rgb(76,110,245)'}}></div>
-		<div class="palette-part" style={{background: 'rgb(253,233,186)'}}></div>
-		<div class="palette-part" style={{background: 'rgb(254,224,224)'}}></div>
-		<div class="palette-part" style={{background: 'rgb(224,242,201)'}}></div>
+  <div className="grid-item">
+	  <div className="color-palette">
+		<div className="palette-part" style={{background: 'rgb(76,110,245)'}}></div>
+		<div className="palette-part" style={{background: 'rgb(253,233,186)'}}></div>
+		<div className="palette-part" style={{background: 'rgb(254,224,224)'}}></div>
+		<div className="palette-part" style={{background: 'rgb(224,242,201)'}}></div>
 	  </div>
 	  </div>  
-  <div class="grid-item"><h2>Beta</h2></div>  
-  <div class="grid-item">
+  <div className="grid-item"><h2>Beta</h2></div>  
+  <div className="grid-item">
   <button onClick={changeGridBeta} style={!gridBeta?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
   	{gridBeta? 'ON' : 'OFF'}
 	</button>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   <button onClick={changeLGBeta} style={!LGBeta?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{LGBeta? 'ON' : 'OFF'}
 	</button>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   <button onClick={changeCountdownBeta} style={!countdownBeta?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{countdownBeta? 'ON' : 'OFF'}
 	</button></div>  
-  <div class="grid-item">
+  <div className="grid-item">
   <button onClick={changeNumQuestionsBeta} style={!numQuestionsBeta?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{numQuestionsBeta? 'ON' : 'OFF'}
 	</button></div>  
-  <div class="grid-item">
-  <div class="color-palette">
-		<div class="palette-part" style={{background: 'rgb(215,223,253)'}}></div>
-		<div class="palette-part" style={{background: 'rgb(250,176,5)'}}></div>
-		<div class="palette-part" style={{background: 'rgb(254,210,210)'}}></div>
-		<div class="palette-part" style={{background: 'rgb(224,242,201)'}}></div>
+  <div className="grid-item">
+  <div className="color-palette">
+		<div className="palette-part" style={{background: 'rgb(215,223,253)'}}></div>
+		<div className="palette-part" style={{background: 'rgb(250,176,5)'}}></div>
+		<div className="palette-part" style={{background: 'rgb(254,210,210)'}}></div>
+		<div className="palette-part" style={{background: 'rgb(224,242,201)'}}></div>
 	  </div>
 	  </div>  
-  <div class="grid-item"><h2>Pilots</h2></div>  
-  <div class="grid-item">
+  <div className="grid-item"><h2>Pilots</h2></div>  
+  <div className="grid-item">
   <button onClick={changeGridPilots} style={!gridPilots?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{gridPilots? 'ON' : 'OFF'}
 	</button>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   <button onClick={changeLGPilots} style={!LGPilots?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{LGPilots? 'ON' : 'OFF'}
 	</button>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   <button onClick={changeCountdownPilots} style={!countdownPilots?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{countdownPilots? 'ON' : 'OFF'}
 	</button>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   <button onClick={changeNumQuestionsPilots} style={!numQuestionsPilots?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{numQuestionsPilots? 'ON' : 'OFF'}
 	</button>
   </div>
-  <div class="grid-item">
-  <div class="color-palette">
-		<div class="palette-part" style={{background: 'rgb(215,223,253)'}}></div>
-		<div class="palette-part" style={{background: 'rgb(253,233,186)'}} ></div>
-		<div class="palette-part" style={{background: 'rgb(250,82,82)'}}></div>
-		<div class="palette-part" style={{background: 'rgb(224,242,201)'}}></div>
+  <div className="grid-item">
+  <div className="color-palette">
+		<div className="palette-part" style={{background: 'rgb(215,223,253)'}}></div>
+		<div className="palette-part" style={{background: 'rgb(253,233,186)'}} ></div>
+		<div className="palette-part" style={{background: 'rgb(250,82,82)'}}></div>
+		<div className="palette-part" style={{background: 'rgb(224,242,201)'}}></div>
 	  </div>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   	<h2>Rest</h2>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   <button onClick={changeGridRest} style={!gridRest?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{gridRest? 'ON' : 'OFF'}
 	</button>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   <button onClick={changeLGRest} style={!LGRest?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{LGRest? 'ON' : 'OFF'}
 	</button>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   <button onClick={changeCountdownRest} style={!countdownRest?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{countdownRest? 'ON' : 'OFF'}
 	</button>
   </div>
-  <div class="grid-item">
+  <div className="grid-item">
   <button onClick={changeNumQuestionsRest} style={!numQuestionsRest?{backgroundColor: 'rgba(255, 99, 71, 0.9)'}:{backgroundColor: 'rgba(123, 239, 178, 1)'}}>
 		{numQuestionsRest? 'ON' : 'OFF'}
 	</button>
   </div>
-  <div class="grid-item">
-  <div class="color-palette">
-		<div class="palette-part" style={{background: 'rgb(215,223,253)'}}></div>
-		<div class="palette-part" style={{background: 'rgb(253,233,186)'}}></div>
-		<div class="palette-part" style={{background: 'rgb(254,210,210)'}}></div>
-		<div class="palette-part" style={{background: 'rgb(130,201,30)'}}></div>
+  <div className="grid-item">
+  <div className="color-palette">
+		<div className="palette-part" style={{background: 'rgb(215,223,253)'}}></div>
+		<div className="palette-part" style={{background: 'rgb(253,233,186)'}}></div>
+		<div className="palette-part" style={{background: 'rgb(254,210,210)'}}></div>
+		<div className="palette-part" style={{background: 'rgb(130,201,30)'}}></div>
 	  </div>
   </div>
 </div>
