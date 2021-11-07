@@ -105,7 +105,7 @@ const StartPage = () => {
     };
     return (
         <div className="page">
-            {!localStorage.getItem("improvedFlaggin") ? (
+            {!JSON.parse(localStorage.getItem("improvedFlagging")) ? (
                 <div className="st-flags">
                     <div className="f32">
                         <div className={`flag swe`}></div>
@@ -371,7 +371,7 @@ const Tie = ({ you, opponent }) => {
     return (
         <div className="results">
             <img src={tie} style={{ width: "80%" }} />
-            <div className="re-text">It's TIE! 😁 </div>
+            <div className="re-text">It's a TIE! 😁 </div>
             <QuickResults you={you} opponent={opponent} />
         </div>
     );
@@ -421,32 +421,40 @@ const Setup = () => {
     );
 
     return (
-        <div className="setup-switch">
-            <div className="improved-scoring" style={{ display: "flex" }}>
-                <h3 style={{ margin: 0 }}>Improved scoring</h3>
-                <button onClick={() => changeScoringState()}>
-                    {scoringBtn ? "ON" : "OFF"}
-                </button>
+        <div className="setup-switch" style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+            <div className="improved-scoring" style={{ display: "flex", width:'500px', justifyContent: 'space-between'}}>
+                <h3 style={{ margin: 0 }}>Improved scoring: </h3>
+				<div style={{ border: '1px solid grey', borderRadius: '10px', padding: '5px 10px', width: '100px'}}>
+					<button onClick={() => changeScoringState()} style={scoringBtn?{padding: '3px 10px', position: 'relative', left: '40px', backgroundColor: 'rgba(123, 239, 178, 1)', borderRadius: '5px', border: 'none'}:{ padding: '3px 10px', border: 'none', position: 'relative', right: 0, backgroundColor: 'rgba(255, 99, 71, 0.9)', borderRadius: '5px'}}>
+						{scoringBtn? 'ON' : 'OFF'}
+					</button>
+				</div>
             </div>
-            <div className="tie-screen" style={{ display: "flex" }}>
+            <div className="tie-screen" style={{ display: "flex", width:'500px', justifyContent: 'space-between'}}>
                 <h3 style={{ margin: 0 }}>Tie Screen</h3>
-                <button onClick={() => changeTieScreenState()}>
-                    {tieScreenBtn ? "ON" : "OFF"}
-                </button>
+				<div style={{ border: '1px solid grey', borderRadius: '10px', padding: '5px 10px', width: '100px'}}>
+					<button onClick={changeTieScreenState} style={tieScreenBtn?{padding: '3px 10px', position: 'relative', left: '40px', backgroundColor: 'rgba(123, 239, 178, 1)', borderRadius: '5px', border: 'none'}:{ padding: '3px 10px', border: 'none', position: 'relative', right: 0, backgroundColor: 'rgba(255, 99, 71, 0.9)', borderRadius: '5px'}}>
+						{tieScreenBtn? 'ON': 'OFF'}
+					</button>
+				</div>
             </div>
-            <div className="extra-flags" style={{ display: "flex" }}>
+            <div className="extra-flags" style={{ display: "flex", width:'500px', justifyContent: 'space-between'}}>
                 <h3 style={{ margin: 0 }}>Extra Flags</h3>
-                <button onClick={() => changeExtraFlagsState()}>
-                    {extraFlagsBtn ? "ON" : "OFF"}
-                </button>
+				<div style={{ border: '1px solid grey', borderRadius: '10px', padding: '5px 10px', width: '100px'}}>
+					<button onClick={changeExtraFlagsState} style={extraFlagsBtn?{padding: '3px 10px', position: 'relative', left: '40px', backgroundColor: 'rgba(123, 239, 178, 1)', borderRadius: '5px', border: 'none'}:{ padding: '3px 10px', border: 'none', position: 'relative', right: 0, backgroundColor: 'rgba(255, 99, 71, 0.9)', borderRadius: '5px'}}>
+						{extraFlagsBtn? 'ON': 'OFF'}
+					</button>
+				</div>
             </div>
-            <div className="extra-questions" style={{ display: "flex" }}>
+            <div className="extra-questions" style={{ display: "flex", width:'500px', justifyContent: 'space-between'}}>
                 <h3 style={{ margin: 0 }}>Generated questions</h3>
-                <button onClick={() => changeQuestionState()}>
-                    {questionBtn ? "ON" : "OFF"}
-                </button>
+				<div style={{ border: '1px solid grey', borderRadius: '10px', padding: '5px 10px', width: '100px'}}>
+					<button onClick={changeQuestionState} style={questionBtn?{padding: '3px 10px', position: 'relative', left: '40px', backgroundColor: 'rgba(123, 239, 178, 1)', borderRadius: '5px', border: 'none'}:{ padding: '3px 10px', border: 'none', position: 'relative', right: 0, backgroundColor: 'rgba(255, 99, 71, 0.9)', borderRadius: '5px'}}>
+						{questionBtn? 'ON' : 'OFF'}
+					</button>
+				</div>
             </div>
-            <div className="setup-footer">
+            <div className="setup-footer" style={{marginTop: '20%'}}>
                 <Link href="/" className="re-home link">
                     Go to app!
                 </Link>
