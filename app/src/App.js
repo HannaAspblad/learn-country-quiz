@@ -559,10 +559,10 @@ const SetupAdvanced = () => {
 	</button></div>  
   <div class="grid-item">
 	  <div class="color-palette">
-		<div class="palette-part"></div>
-		<div class="palette-part"></div>
-		<div class="palette-part"></div>
-		<div class="palette-part"></div>
+		<div class="palette-part" style={{background: 'rgb(76,110,245)'}}></div>
+		<div class="palette-part" style={{background: 'rgb(253,233,186)'}}></div>
+		<div class="palette-part" style={{background: 'rgb(254,224,224)'}}></div>
+		<div class="palette-part" style={{background: 'rgb(224,242,201)'}}></div>
 	  </div>
 	  </div>  
   <div class="grid-item"><h2>Beta</h2></div>  
@@ -586,10 +586,10 @@ const SetupAdvanced = () => {
 	</button></div>  
   <div class="grid-item">
   <div class="color-palette">
-		<div class="palette-part"></div>
-		<div class="palette-part"></div>
-		<div class="palette-part"></div>
-		<div class="palette-part"></div>
+		<div class="palette-part" style={{background: 'rgb(215,223,253)'}}></div>
+		<div class="palette-part" style={{background: 'rgb(250,176,5)'}}></div>
+		<div class="palette-part" style={{background: 'rgb(254,210,210)'}}></div>
+		<div class="palette-part" style={{background: 'rgb(224,242,201)'}}></div>
 	  </div>
 	  </div>  
   <div class="grid-item"><h2>Pilots</h2></div>  
@@ -615,10 +615,10 @@ const SetupAdvanced = () => {
   </div>
   <div class="grid-item">
   <div class="color-palette">
-		<div class="palette-part"></div>
-		<div class="palette-part"></div>
-		<div class="palette-part"></div>
-		<div class="palette-part"></div>
+		<div class="palette-part" style={{background: 'rgb(215,223,253)'}}></div>
+		<div class="palette-part" style={{background: 'rgb(253,233,186)'}} ></div>
+		<div class="palette-part" style={{background: 'rgb(250,82,82)'}}></div>
+		<div class="palette-part" style={{background: 'rgb(224,242,201)'}}></div>
 	  </div>
   </div>
   <div class="grid-item">
@@ -646,10 +646,10 @@ const SetupAdvanced = () => {
   </div>
   <div class="grid-item">
   <div class="color-palette">
-		<div class="palette-part"></div>
-		<div class="palette-part"></div>
-		<div class="palette-part"></div>
-		<div class="palette-part"></div>
+		<div class="palette-part" style={{background: 'rgb(215,223,253)'}}></div>
+		<div class="palette-part" style={{background: 'rgb(253,233,186)'}}></div>
+		<div class="palette-part" style={{background: 'rgb(254,210,210)'}}></div>
+		<div class="palette-part" style={{background: 'rgb(130,201,30)'}}></div>
 	  </div>
   </div>
 </div>
