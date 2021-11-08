@@ -87,7 +87,6 @@ const StartPage = () => {
     if (loading) return <div className="fw6 fs5">Loading...</div>;
     const nextGame = snapshot.val();
     const play = async () => {
-
         if (R.isNil(nextGame)) {
             const updates = {};
             const gameId = nanoid();
@@ -95,7 +94,7 @@ const StartPage = () => {
             await update(ref(db), updates);
             setLocation(`/game/${gameId}/1`);
         } else {
-			logEvent(analytics, 'game_started');
+            logEvent(analytics, "game_started");
 
             let game = null;
             if (JSON.parse(localStorage.getItem("improvedQuestions"))) {
@@ -199,7 +198,7 @@ const GamePage = ({ gameId, playerId }) => {
     const game = snapshot.val();
 
     const cancel = async () => {
-		logEvent(analytics, 'cancelled_game')
+        logEvent(analytics, "cancelled_game");
         const updates = {};
         updates["/nextGame"] = null;
         await update(ref(db), updates);
@@ -327,8 +326,7 @@ const QuickResults = ({ you, opponent }) => {
 };
 
 const ResultsPage = ({ gameId, playerId }) => {
-
-	logEvent(analytics, 'finished_game')
+    logEvent(analytics, "finished_game");
 
     const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`));
 
@@ -403,7 +401,7 @@ const Cookies = (props) => {
             { path: "/" }
         );
         localStorage.setItem("cookies", true);
-        console.log(cookies);
+        // console.log(cookies);
     };
     return (
         <div className="cookie-banner">
@@ -645,6 +643,7 @@ const Setup = () => {
 };
 
 const SetupAdvanced = () => {
+    const [snapshot, loading, error] = useObject(ref(db, "profiles"));
     //Grids
     const [gridAlpha, setGridAlpa] = useState(false);
     const [gridBeta, setGridBeta] = useState(false);
@@ -665,14 +664,49 @@ const SetupAdvanced = () => {
     const [numQuestionsBeta, setNumQuestionsBeta] = useState(false);
     const [numQuestionsPilots, setNumQuestionsPilots] = useState(false);
     const [numQuestionsRest, setNumQuestionsRest] = useState(false);
-
-    //grid functions
-    const changeGridAlpha = () => setGridAlpa(!gridAlpha);
-    const changeGridBeta = () => setGridBeta(!gridBeta);
-    const changeGridPilots = () => setGridPilots(!gridPilots);
-    const changeGridRest = () => setGridRest(!gridRest);
+    useEffect(() => {
+        if (!loading) {
+            setGridAlpa(snapshot.val().alpha.grid);
+            setGridBeta(snapshot.val().beta.grid);
+            setGridPilots(snapshot.val().pilots.grid);
+            setGridRest(snapshot.val().rest.grid);
+            setLGAlpa(snapshot.val().alpha.latestGames);
+            setLGBeta(snapshot.val().beta.latestGame);
+            setLGPilots(snapshot.val().pilots.latestGame);
+            setLGRest(snapshot.val().rest.latestGame);
+        }
+    }, [snapshot]);
+    const changeGridAlpha = () => {
+        setGridAlpa(!gridAlpha);
+        update(ref(db, "profiles"), {
+            alpha: { grid: !gridAlpha },
+        });
+    };
+    const changeGridBeta = () => {
+        setGridBeta(!gridBeta);
+        update(ref(db, "profiles"), {
+            beta: { grid: !gridBeta },
+        });
+    };
+    const changeGridPilots = () => {
+        setGridPilots(!gridPilots);
+        update(ref(db, "profiles"), {
+            pilots: { grid: !gridPilots },
+        });
+    };
+    const changeGridRest = () => {
+        setGridRest(!gridRest);
+        update(ref(db, "profiles"), {
+            rest: { grid: !gridRest },
+        });
+    };
     //latesGames functions
-    const changeLGAlpha = () => setLGAlpa(!LGAlpha);
+    const changeLGAlpha = () => {
+        setLGAlpa(!LGAlpha);
+        update(ref(db, "profiles"), {
+            alpha: { latestGames: !LGAlpha },
+        });
+    };
     const changeLGBeta = () => setLGBeta(!LGBeta);
     const changeLGPilots = () => setLGPilots(!LGPilots);
     const changeLGRest = () => setLGRest(!LGRest);
@@ -686,7 +720,6 @@ const SetupAdvanced = () => {
     const changeNumQuestionsBeta = () => setNumQuestionsBeta(!numQuestionsBeta);
     const changeNumQuestionsPilots = () => setNumQuestionsPilots(!numQuestionsPilots);
     const changeNumQuestionsRest = () => setNumQuestionsRest(!numQuestionsRest);
-
     return (
         <div className="wrapper-advanced-settings">
             <div
