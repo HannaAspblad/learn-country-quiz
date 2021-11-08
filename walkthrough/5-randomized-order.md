@@ -19,10 +19,10 @@ We are soon going to add Google Analytics to the site. Make sure to add appropri
 
 Go through the GDPR slides and recording from Friday 5 Nov. The main points are:
 
- - Get users’ consent ***before*** use any cookies (except strictly necessary cookies)
+ - Get users’ consent ***before*** using any cookies (except strictly necessary cookies)
  - Explain each cookie in plain language before consent (could have a link to your explanations)
  - Maintain a sub processor list
 
-Don't forget to [put a green checkmark](0-instructions.md) before you continue to the next task!
+Don't forget to [put a green checkmark](README.md) before you continue to the next task!
 
 [Continue!](6-google-analytics.md)
