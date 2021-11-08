@@ -11,7 +11,7 @@ import tie from "../assets/tie.png";
 import { useCookies } from "react-cookie";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, logEvent } from "firebase/analytics";
 import { ref, getDatabase, set, update } from "firebase/database";
 import { useObject } from "react-firebase-hooks/database";
 
@@ -87,6 +87,7 @@ const StartPage = () => {
     if (loading) return <div className="fw6 fs5">Loading...</div>;
     const nextGame = snapshot.val();
     const play = async () => {
+
         if (R.isNil(nextGame)) {
             const updates = {};
             const gameId = nanoid();
@@ -94,6 +95,8 @@ const StartPage = () => {
             await update(ref(db), updates);
             setLocation(`/game/${gameId}/1`);
         } else {
+			logEvent(analytics, 'game_started');
+
             let game = null;
             if (JSON.parse(localStorage.getItem("improvedQuestions"))) {
                 game = utils.createGame("improvedQuestions");
@@ -196,6 +199,7 @@ const GamePage = ({ gameId, playerId }) => {
     const game = snapshot.val();
 
     const cancel = async () => {
+		logEvent(analytics, 'cancelled_game')
         const updates = {};
         updates["/nextGame"] = null;
         await update(ref(db), updates);
@@ -323,6 +327,9 @@ const QuickResults = ({ you, opponent }) => {
 };
 
 const ResultsPage = ({ gameId, playerId }) => {
+
+	logEvent(analytics, 'finished_game')
+
     const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`));
 
     if (loading) return <div className="fw6 fs5">Loading...</div>;
