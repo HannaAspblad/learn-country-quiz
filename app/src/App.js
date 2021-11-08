@@ -72,6 +72,7 @@ const StartPage = () => {
     if (randomizeCountries.includes(newCountries)) {
       newCountries = countriesArr[Math.floor(Math.random() * 200)];
     }
+<<<<<<< HEAD
     randomizeCountries.push(newCountries);
   }
 
@@ -164,6 +165,109 @@ const StartPage = () => {
           <div className="f32">
             <div className={`flag bwa`}></div>
           </div>
+=======
+
+    if (loading) return <div className="fw6 fs5">Loading...</div>;
+    const nextGame = snapshot.val();
+    const play = async () => {
+        if (R.isNil(nextGame)) {
+            const updates = {};
+            const gameId = nanoid();
+            updates["/nextGame"] = gameId;
+            await update(ref(db), updates);
+            setLocation(`/game/${gameId}/1`);
+        } else {
+            let game = null
+            if (JSON.parse(localStorage.getItem("improvedQuestions")) == true) {
+                game = utils.createGame("improvedQuestions");
+            } else {
+                game = utils.createGame("standardQuestion");
+            }
+            const updates = {};
+            updates["/nextGame"] = null;
+            updates[`/games/${nextGame}`] = game;
+            await update(ref(db), updates);
+            setLocation(`/game/${nextGame}/2`);
+
+            await utils.sleep(3000);
+            const updates2 = {};
+            updates2[`/games/${nextGame}/status`] = "playing";
+            await update(ref(db), updates2);
+        }
+    };
+    return (
+        <div className="page">
+            {!localStorage.getItem("improvedFlaggin") ? (
+                <div className="st-flags">
+                    <div className="f32">
+                        <div className={`flag swe`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag bih`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag brb`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag swe`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag bgd`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag bel`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag bfa`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag bgr`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag bhr`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag bdi`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag ben`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag bmu`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag brn`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag bol`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag bra`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag bhs`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag btn`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag fra`}></div>
+                    </div>
+                    <div className="f32">
+                        <div className={`flag bwa`}></div>
+                    </div>
+                </div>
+            ) : (
+                <div className="f32">
+                    {randomizeCountries.map((country, i) => (
+                        <div key={i} className={`flag ${country.toLowerCase()}`}></div>
+                    ))}
+                </div>
+            )}
+            <div className="button btn-square" onClick={play}>
+                Play
+            </div>
+>>>>>>> 055ec4ef82811631c054f0c253d4ca483db3df38
         </div>
       ) : (
         <div className="f32">
@@ -379,6 +483,7 @@ const Tie = ({ you, opponent }) => {
   );
 };
 
+<<<<<<< HEAD
 const Cookies = () => {
   return (
     <div className="cookie-banner">
@@ -395,6 +500,40 @@ const Setup = () => {
     localStorage.setItem(
       "improvedQuestions",
       !JSON.parse(localStorage.getItem("improvedQuestions"))
+=======
+const Setup = () => {
+    const changeQuestionState = () => {
+        setQuestionBtn(!questionBtn);
+        localStorage.setItem(
+            "improvedQuestions",
+            !JSON.parse(localStorage.getItem("improvedQuestions"))
+        );
+    };
+
+    const changeScoringState = () => {
+        setScoringBtn(!scoringBtn);
+        localStorage.setItem(
+            "improvedScoring",
+            !JSON.parse(localStorage.getItem("improvedScoring"))
+        );
+    };
+    const changeTieScreenState = () => {
+        setTieScreenBtn(!tieScreenBtn);
+        localStorage.setItem(
+            "improvedResult",
+            !JSON.parse(localStorage.getItem("improvedResult"))
+        );
+    };
+    const changeExtraFlagsState = () => {
+        setExtraFlagsBtn(!extraFlagsBtn);
+        localStorage.setItem(
+            "improvedFlagging",
+            !JSON.parse(localStorage.getItem("improvedFlagging"))
+        );
+    };
+    const [questionBtn, setQuestionBtn] = useState(
+        JSON.parse(localStorage.getItem("improvedQuestions"))
+>>>>>>> 055ec4ef82811631c054f0c253d4ca483db3df38
     );
   };
 
