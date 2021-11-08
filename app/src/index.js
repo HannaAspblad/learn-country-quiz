@@ -8,7 +8,7 @@ localStorage.setItem("improvedScoring", false);
 localStorage.setItem("improvedFlagging", false);
 localStorage.setItem("improvedResult", false);
 localStorage.setItem("improvedQuestions", false);
-localStorage.setItem("cookies", false);
+/* localStorage.setItem("cookies", false); */
 
 ReactDOM.render(
     <React.StrictMode>

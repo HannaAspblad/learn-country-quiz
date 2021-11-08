@@ -59,7 +59,7 @@ export const createGame = (str) => {
     for (let i = 1; i <= 5; i++) {
         quizQuestions[i] = generateQuestion();
     }
-    console.log(str);
+    //console.log(str);
     str == "improvedQuestions"
         ? (generatedQuestions = quizQuestions)
         : (generatedQuestions = hardCodedQuestions);

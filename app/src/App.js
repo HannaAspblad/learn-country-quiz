@@ -8,6 +8,7 @@ import countries from "./countries";
 import winning from "../assets/winning.png";
 import dog from "../assets/dog.png";
 import tie from "../assets/tie.png";
+import cookieImg from '../assets/cookie.png'
 import { useCookies } from "react-cookie";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -31,21 +32,43 @@ const firebaseConfig = {
     measurementId: "G-P0R7DLCGR4",
 };
 
+let analyticsCookies = false
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+let analytics = null
+analyticsCookies ? analytics = getAnalytics(app) : analytics = null;
+//const analytics = getAnalytics(app);
 
 const db = getDatabase(app);
 function App() {
-    const [allowCookies, setAllowCookies] = useState(
-        JSON.parse(localStorage.getItem("cookies"))
-    );
+    const [showCookieBanner, setShowCookieBanner] = useState(true)
+	const [cookies, setCookie] = useCookies(["user"]);
+
+	useEffect(() => {
+		console.log(cookies)
+		/* if(cookies){
+			if(cookies.cookiesConsent){
+				setShowCookieBanner(false)
+				if(cookies.cookiesConsent.setting == 'All'){
+					analyticsCookies = true
+				} else {
+					analyticsCookies = false
+			}
+			} else {
+				setShowCookieBanner(true)
+			}			
+		} */	
+	}, [showCookieBanner])
+
     return (
         <div className="app">
             <div className="header">THE FLAG GAME</div>
             <div className="middle">
                 <Route path="/">
                     <StartPage />
+					{showCookieBanner && (
+                    <Cookies showBanner={() => setShowCookieBanner(!showCookieBanner)} />
+                )}
                 </Route>
                 <Route path="/game/:gameId/:playerId">
                     {(params) => {
@@ -60,12 +83,12 @@ function App() {
                 <Route path="/setup-advanced">
                     <SetupAdvanced />
                 </Route>
+				<Route path="/cookies">
+                    <HelloWorld />
+                </Route>
             </div>
-            <div className="footer">
-                {!allowCookies && (
-                    <Cookies accept={() => setAllowCookies(!allowCookies)} />
-                )}
-            </div>
+            <div className="footer"> </div>
+			
         </div>
     );
 }
@@ -94,8 +117,9 @@ const StartPage = () => {
             await update(ref(db), updates);
             setLocation(`/game/${gameId}/1`);
         } else {
-            logEvent(analytics, "game_started");
-
+			if(analyticsCookies){
+				logEvent(analytics, "game_started");
+			}
             let game = null;
             if (JSON.parse(localStorage.getItem("improvedQuestions"))) {
                 game = utils.createGame("improvedQuestions");
@@ -198,7 +222,9 @@ const GamePage = ({ gameId, playerId }) => {
     const game = snapshot.val();
 
     const cancel = async () => {
-        logEvent(analytics, "cancelled_game");
+		if(analyticsCookies){
+			logEvent(analytics, "cancelled_game");
+		}        
         const updates = {};
         updates["/nextGame"] = null;
         await update(ref(db), updates);
@@ -326,8 +352,9 @@ const QuickResults = ({ you, opponent }) => {
 };
 
 const ResultsPage = ({ gameId, playerId }) => {
-    logEvent(analytics, "finished_game");
-
+	if(analyticsCookies){
+		logEvent(analytics, "finished_game");
+	}
     const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`));
 
     if (loading) return <div className="fw6 fs5">Loading...</div>;
@@ -391,26 +418,95 @@ const Tie = ({ you, opponent }) => {
     );
 };
 
+
 const Cookies = (props) => {
     const [cookies, setCookie] = useCookies(["user"]);
-    const acceptCookies = () => {
-        props.accept();
+	const [showButtonBasic, setShowButtonBasic] = useState(true)
+
+	const acceptAllCookies = async () => {
+		console.log('all')
+        props.showBanner();
         setCookie(
-            "cookiesConcent",
-            { user: "AI", when: Date(), setting: "All", method: "push allow" },
-            { path: "/" }
+            "cookiesConsent",
+            { user: "AI", date: Date(), setting: "All", method: "Pushed_Allow" }
         );
-        localStorage.setItem("cookies", true);
-        // console.log(cookies);
     };
+
+	const acceptBasicCookies = async () => {
+		props.showBanner();
+		setCookie(
+            "cookiesConsent",
+            { user: "AI", date: Date(), setting: "Basic", method: "Pushed_Allow" }
+        );
+	}
+
+	const dismiss = async (e) => {
+		console.log(e.target)
+		e.preventDefault();
+		//props.showBanner();
+		setCookie(
+            "cookiesConsent",
+            { user: "AI", date: Date(), setting: "Basic", method: "Dismiss" }
+        );
+	}
+
+
     return (
-        <div className="cookie-banner">
-            <h2>cookie consent</h2>
-            <button onClick={acceptCookies}>yep</button>
-            <button>nope</button>
+        <div className="cookie-banner-backdrop">
+			<div className="cookie-content">
+				{<img src={cookieImg} />}
+            	<h2>Our website uses cookies</h2>
+				<p>We use necessary cookies to make our site work. We'd also like to set analytics cookies that help us make improvements by measuring how you use the site. These will be set only if you accept.</p>
+				<p>For more detailed information about the cookies we use, <a target="_blank" href="/cookies" className="link cookies-link">
+				see our Cookies page.
+                </a></p>
+				
+				<div className="cookie-options">
+					<div>
+						<input type="checkbox" checked="checked" readOnly/> 
+						<label><strong>Nessesary cookies</strong><br/> helps with the basic functionality of our website, e.g. remember if you gave consent to cookies.</label>
+					</div>
+					<div>
+						<input type="checkbox" checked={showButtonBasic} onChange={() => setShowButtonBasic(!showButtonBasic)}/> 
+						<label><strong>Analytical cookies</strong><br/> make it possible to gather statistics about the use and traffic on our website, so we can make it better.</label>
+					</div>
+				</div>
+			
+				<div className="cookie-buttons">
+					{!showButtonBasic && <button onClick={acceptBasicCookies}>Accept nessesary</button>}
+            		{showButtonBasic && <button onClick={acceptAllCookies} className="accept-all" >Accept all</button>}
+				</div>
+			</div>
         </div>
     );
 };
+
+const HelloWorld = () => {
+
+	return (
+		<div className="cookie-page-wrapper">
+			<h1>Cookies</h1>
+			<h2>Use of cookies by The Flag Game</h2>
+			<p>Cookies are small text files that are placed on your computer by websites that you visit. They are widely used in order to make websites work, or work more efficiently, as well as to provide information to the owners of the site. The table below explains the cookies we use and why.</p>
+			{/* grid columns 3 * rows = antal cookies + headers */}
+
+			{/* Cookie, Name, Purpose */}
+			<div className="cookie-grid-container">
+				<div className="cookie-grid-item">Cookie</div>
+				<div className="cookie-grid-item">Name</div>
+				<div className="cookie-grid-item">Purpose</div>
+				<div className="cookie-grid-item"><p>Cookie preference</p></div>
+				<div className="cookie-grid-item"><p>cookiesConsent</p></div>
+				<div className="cookie-grid-item"><p>This cookie is used to remember a user’s choice about cookies on The Flag Game. Where users have previously indicated a preference, that user’s preference will be stored in this cookie.</p></div>
+			</div>
+			<div className="cookie-page-footer" style={{ marginTop: "20%" }}>
+                <Link href="/" className="re-home link">
+                    Go to app!
+                </Link>
+            </div>
+		</div>
+	)
+}
 
 const Setup = () => {
     const [questionBtn, setQuestionBtn] = useState(
