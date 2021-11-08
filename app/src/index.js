@@ -7,7 +7,8 @@ import App from "./App";
 localStorage.setItem("improvedScoring", false);
 localStorage.setItem("improvedFlagging", false);
 localStorage.setItem("improvedResult", false);
-localStorage.setItem('improvedQuestions', false)
+localStorage.setItem("improvedQuestions", false);
+localStorage.setItem("cookiesAlternatives", false);
 
 ReactDOM.render(
   <React.StrictMode>
