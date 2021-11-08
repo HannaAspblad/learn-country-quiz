@@ -14,7 +14,7 @@ Done | Step | Grading
 ✅ | 3 - [Small improvements](3-small-improvements.md) | **G**
 ✅ | 4 - [Improved feature flagging](4-improved-feature-flagging.md) | **G**
 ✅ | 5 - [Randomized order and GDPR](5-randomized-order.md) | **G**
-⬜ | 6 - [Add Google analytics](6-google-analytics.md) | **G**
+✅ | 6 - [Add Google analytics](6-google-analytics.md) | **G**
 ⬜ | 7 - [Advanced feature flags](7-advanced-feature-flags.md) | **VG**
 ⬜ | 8 - [New features and A/B testing](8-new-features-and-ab-testing.md) | **VG**
 ⬜ | 9 - [Improvement suggestions](9-suggest-improvements.md) | **VG**
