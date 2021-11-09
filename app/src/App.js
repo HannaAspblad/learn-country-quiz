@@ -8,7 +8,7 @@ import countries from "./countries";
 import winning from "../assets/winning.png";
 import dog from "../assets/dog.png";
 import tie from "../assets/tie.png";
-import cookieImg from '../assets/cookie.png'
+import cookieImg from "../assets/cookie.png";
 import { useCookies } from "react-cookie";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -32,32 +32,34 @@ const firebaseConfig = {
     measurementId: "G-P0R7DLCGR4",
 };
 
-let analyticsCookies = false
+let analyticsCookies = false;
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-let analytics
+let analytics;
 //const analytics = getAnalytics(app);
 
 const db = getDatabase(app);
 function App() {
-    const [showCookieBanner, setShowCookieBanner] = useState(true)
-	const [cookies, setCookie] = useCookies(["user"]);
+    const [showCookieBanner, setShowCookieBanner] = useState(true);
+    const [cookies, setCookie] = useCookies(["user"]);
 
-	useEffect(() => {
-		//analyticsCookies ? analytics = getAnalytics(app) : analytics = null;
-		if(cookies){
-			if(cookies.cookiesConsent){
-				setShowCookieBanner(false)
-				if(cookies.cookiesConsent.setting == 'All'){
-					analyticsCookies = true
-					analyticsCookies ? analytics = getAnalytics(app) : analytics = null;
-					//location.reload()
-				} else {
-					analyticsCookies = false
-				}
-			}		
-		}
-	}, [showCookieBanner])
+    useEffect(() => {
+        //analyticsCookies ? analytics = getAnalytics(app) : analytics = null;
+        if (cookies) {
+            if (cookies.cookiesConsent) {
+                setShowCookieBanner(false);
+                if (cookies.cookiesConsent.setting == "All") {
+                    analyticsCookies = true;
+                    analyticsCookies
+                        ? (analytics = getAnalytics(app))
+                        : (analytics = null);
+                    //location.reload()
+                } else {
+                    analyticsCookies = false;
+                }
+            }
+        }
+    }, [showCookieBanner]);
 
     return (
         <div className="app">
@@ -65,9 +67,11 @@ function App() {
             <div className="middle">
                 <Route path="/">
                     <StartPage />
-					{showCookieBanner && (
-                    <Cookies showBanner={() => setShowCookieBanner(!showCookieBanner)} />
-                )}
+                    {showCookieBanner && (
+                        <Cookies
+                            showBanner={() => setShowCookieBanner(!showCookieBanner)}
+                        />
+                    )}
                 </Route>
                 <Route path="/game/:gameId/:playerId">
                     {(params) => {
@@ -82,12 +86,11 @@ function App() {
                 <Route path="/setup-advanced">
                     <SetupAdvanced />
                 </Route>
-				<Route path="/cookies">
+                <Route path="/cookies">
                     <HelloWorld />
                 </Route>
             </div>
             <div className="footer"> </div>
-			
         </div>
     );
 }
@@ -116,9 +119,9 @@ const StartPage = () => {
             await update(ref(db), updates);
             setLocation(`/game/${gameId}/1`);
         } else {
-			if(analyticsCookies){
-				logEvent(analytics, "game_started");
-			}
+            if (analyticsCookies) {
+                logEvent(analytics, "game_started");
+            }
             let game = null;
             if (JSON.parse(localStorage.getItem("improvedQuestions"))) {
                 game = utils.createGame("improvedQuestions");
@@ -221,9 +224,9 @@ const GamePage = ({ gameId, playerId }) => {
     const game = snapshot.val();
 
     const cancel = async () => {
-		if(analyticsCookies){
-			logEvent(analytics, "cancelled_game");
-		}        
+        if (analyticsCookies) {
+            logEvent(analytics, "cancelled_game");
+        }
         const updates = {};
         updates["/nextGame"] = null;
         await update(ref(db), updates);
@@ -351,9 +354,9 @@ const QuickResults = ({ you, opponent }) => {
 };
 
 const ResultsPage = ({ gameId, playerId }) => {
-	if(analyticsCookies){
-		logEvent(analytics, "finished_game");
-	}
+    if (analyticsCookies) {
+        logEvent(analytics, "finished_game");
+    }
     const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`));
 
     if (loading) return <div className="fw6 fs5">Loading...</div>;
@@ -417,93 +420,138 @@ const Tie = ({ you, opponent }) => {
     );
 };
 
-
 const Cookies = (props) => {
     const [cookies, setCookie] = useCookies(["user"]);
-	const [showButtonBasic, setShowButtonBasic] = useState(true)
+    const [showButtonBasic, setShowButtonBasic] = useState(true);
 
-	const acceptAllCookies = async () => {
-		console.log('all')
+    const acceptAllCookies = async () => {
+        console.log("all");
         props.showBanner();
-        setCookie(
-            "cookiesConsent",
-            { user: "AI", date: Date(), setting: "All", method: "Pushed_Allow" }
-        );
-		location.reload()
+        setCookie("cookiesConsent", {
+            user: "AI",
+            date: Date(),
+            setting: "All",
+            method: "Pushed_Allow",
+        });
+        location.reload();
     };
 
-	const acceptBasicCookies = async () => {
-		props.showBanner();
-		setCookie(
-            "cookiesConsent",
-            { user: "AI", date: Date(), setting: "Basic", method: "Pushed_Allow" }
-        );
-	}
+    const acceptBasicCookies = async () => {
+        props.showBanner();
+        setCookie("cookiesConsent", {
+            user: "AI",
+            date: Date(),
+            setting: "Basic",
+            method: "Pushed_Allow",
+        });
+    };
 
-	const dismiss = async (e) => {
-		console.log(e.target)
-		e.preventDefault();
-		//props.showBanner();
-		setCookie(
-            "cookiesConsent",
-            { user: "AI", date: Date(), setting: "Basic", method: "Dismiss" }
-        );
-	}
-
+    const dismiss = async (e) => {
+        console.log(e.target);
+        e.preventDefault();
+        //props.showBanner();
+        setCookie("cookiesConsent", {
+            user: "AI",
+            date: Date(),
+            setting: "Basic",
+            method: "Dismiss",
+        });
+    };
 
     return (
         <div className="cookie-banner-backdrop">
-			<div className="cookie-content">
-				{<img src={cookieImg} />}
-            	<h2>Our website uses cookies</h2>
-				<p>We use necessary cookies to make our site work. We'd also like to set analytics cookies that help us make improvements by measuring how you use the site. These will be set only if you accept.</p>
-				<p>For more detailed information about the cookies we use, <a target="_blank" href="/cookies" className="link cookies-link">
-				see our Cookies page.
-                </a></p>
-				
-				<div className="cookie-options">
-					<div>
-						<input type="checkbox" checked="checked" readOnly/> 
-						<label><strong>Nessesary cookies</strong><br/> helps with the basic functionality of our website, e.g. remember if you gave consent to cookies.</label>
-					</div>
-					<div>
-						<input type="checkbox" checked={showButtonBasic} onChange={() => setShowButtonBasic(!showButtonBasic)}/> 
-						<label><strong>Analytical cookies</strong><br/> make it possible to gather statistics about the use and traffic on our website, so we can make it better.</label>
-					</div>
-				</div>
-			
-				<div className="cookie-buttons">
-					{!showButtonBasic && <button onClick={acceptBasicCookies}>Accept nessesary</button>}
-            		{showButtonBasic && <button onClick={acceptAllCookies} className="accept-all" >Accept all</button>}
-				</div>
-			</div>
+            <div className="cookie-content">
+                {<img src={cookieImg} />}
+                <h2>Our website uses cookies</h2>
+                <p>
+                    We use necessary cookies to make our site work. We'd also like to set
+                    analytics cookies that help us make improvements by measuring how you
+                    use the site. These will be set only if you accept.
+                </p>
+                <p>
+                    For more detailed information about the cookies we use,{" "}
+                    <a target="_blank" href="/cookies" className="link cookies-link">
+                        see our Cookies page.
+                    </a>
+                </p>
+
+                <div className="cookie-options">
+                    <div>
+                        <input type="checkbox" checked="checked" readOnly />
+                        <label>
+                            <strong>Nessesary cookies</strong>
+                            <br /> helps with the basic functionality of our website, e.g.
+                            remember if you gave consent to cookies.
+                        </label>
+                    </div>
+                    <div>
+                        <input
+                            type="checkbox"
+                            checked={showButtonBasic}
+                            onChange={() => setShowButtonBasic(!showButtonBasic)}
+                        />
+                        <label>
+                            <strong>Analytical cookies</strong>
+                            <br /> make it possible to gather statistics about the use and
+                            traffic on our website, so we can make it better.
+                        </label>
+                    </div>
+                </div>
+
+                <div className="cookie-buttons">
+                    {!showButtonBasic && (
+                        <button onClick={acceptBasicCookies}>Accept nessesary</button>
+                    )}
+                    {showButtonBasic && (
+                        <button onClick={acceptAllCookies} className="accept-all">
+                            Accept all
+                        </button>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };
 
-const HelloWorld = () => { //byt namn
+const HelloWorld = () => {
+    //byt namn
 
-	return (
-		<div className="cookie-page-wrapper">
-			<h1>Cookies</h1>
-			<h2>Use of cookies by The Flag Game</h2>
-			<p>Cookies are small text files that are placed on your computer by websites that you visit. They are widely used in order to make websites work, or work more efficiently, as well as to provide information to the owners of the site. The table below explains the cookies we use and why.</p>
-			<div className="cookie-grid-container">
-				 <div className="cookie-grid-item">Cookie</div>
-				<div className="cookie-grid-item">Name</div>
-				<div className="cookie-grid-item">Purpose</div>
-				<div className="cookie-grid-item"><p>Cookie preference</p></div>
-				<div className="cookie-grid-item"><p>cookiesConsent</p></div>
-				<div className="cookie-grid-item"><p>This cookie is used to remember a user’s choice about cookies on The Flag Game. Where users have previously indicated a preference, that user’s preference will be stored in this cookie.</p></div>
-			</div>
-			<div className="cookie-page-footer" style={{ marginTop: "20%" }}>
+    return (
+        <div className="cookie-page-wrapper">
+            <h1>Cookies</h1>
+            <h2>Use of cookies by The Flag Game</h2>
+            <p>
+                Cookies are small text files that are placed on your computer by websites
+                that you visit. They are widely used in order to make websites work, or
+                work more efficiently, as well as to provide information to the owners of
+                the site. The table below explains the cookies we use and why.
+            </p>
+            <div className="cookie-grid-container">
+                <div className="cookie-grid-item">Cookie</div>
+                <div className="cookie-grid-item">Name</div>
+                <div className="cookie-grid-item">Purpose</div>
+                <div className="cookie-grid-item">
+                    <p>Cookie preference</p>
+                </div>
+                <div className="cookie-grid-item">
+                    <p>cookiesConsent</p>
+                </div>
+                <div className="cookie-grid-item">
+                    <p>
+                        This cookie is used to remember a user’s choice about cookies on
+                        The Flag Game. Where users have previously indicated a preference,
+                        that user’s preference will be stored in this cookie.
+                    </p>
+                </div>
+            </div>
+            <div className="cookie-page-footer" style={{ marginTop: "20%" }}>
                 <Link href="/" className="re-home link">
                     Go to app!
                 </Link>
             </div>
-		</div>
-	)
-}
+        </div>
+    );
+};
 
 const Setup = () => {
     const [questionBtn, setQuestionBtn] = useState(
@@ -743,8 +791,7 @@ const SetupAdvanced = () => {
     const [gridPilots, setGridPilots] = useState(false);
     const [gridRest, setGridRest] = useState(false);
     //latestGames
-    //const [LGAlpha, setLGAlpha] = useState(false);
-	const [LGAlpha, setLGAlpha] = useState(false);
+    const [LGAlpha, setLGAlpha] = useState(false);
     const [LGBeta, setLGBeta] = useState(false);
     const [LGPilots, setLGPilots] = useState(false);
     const [LGRest, setLGRest] = useState(false);
@@ -764,86 +811,129 @@ const SetupAdvanced = () => {
             setGridBeta(snapshot.val().beta.grid);
             setGridPilots(snapshot.val().pilots.grid);
             setGridRest(snapshot.val().rest.grid);
-            /* setLGAlpha(snapshot.val().alpha.latestGames);
-            setLGBeta(snapshot.val().beta.latestGame);
-            setLGPilots(snapshot.val().pilots.latestGame);
-            setLGRest(snapshot.val().rest.latestGame); */
+            setLGAlpha(snapshot.val().alpha.latestGames);
+            setLGBeta(snapshot.val().beta.latestGames);
+            setLGPilots(snapshot.val().pilots.latestGames);
+            setLGRest(snapshot.val().rest.latestGames);
+            setCountdownAlpha(snapshot.val().alpha.countdown);
+            setCountdownBeta(snapshot.val().beta.countdown);
+            setCountdownPilots(snapshot.val().pilots.countdown);
+            setCountdownRest(snapshot.val().rest.countdown);
+            setNumQuestionsAlpha(snapshot.val().alpha.numQuestions);
+            setNumQuestionsBeta(snapshot.val().beta.numQuestions);
+            setNumQuestionsPilots(snapshot.val().pilots.numQuestions);
+            setNumQuestionsRest(snapshot.val().rest.numQuestions);
         }
     }, [snapshot]);
 
-	const changeAlpha = (str, value) => {
-		console.log(LGAlpha)
-		const newUpdate = {
-			grid: gridAlpha,
-			latestGames: LGAlpha,
-			countdown: countdownAlpha,
-			numQuestions: numQuestionsAlpha
-		}
-		newUpdate[str] = value
-		console.log(newUpdate)
-		update(ref(db, "profiles"), {alpha: newUpdate})
-	}
+    const changeAlpha = (str, value) => {
+        const newUpdate = {
+            grid: gridAlpha,
+            latestGames: LGAlpha,
+            countdown: countdownAlpha,
+            numQuestions: numQuestionsAlpha,
+        };
+        newUpdate[str] = value;
+        update(ref(db, "profiles"), { alpha: newUpdate });
+    };
+    const changeBeta = (str, value) => {
+        const newUpdate = {
+            grid: gridBeta,
+            latestGames: LGBeta,
+            countdown: countdownBeta,
+            numQuestions: numQuestionsBeta,
+        };
+        newUpdate[str] = value;
+        update(ref(db, "profiles"), { beta: newUpdate });
+    };
+    const changePilots = (str, value) => {
+        const newUpdate = {
+            grid: gridPilots,
+            latestGames: LGPilots,
+            countdown: countdownPilots,
+            numQuestions: numQuestionsPilots,
+        };
+        newUpdate[str] = value;
+        update(ref(db, "profiles"), { pilots: newUpdate });
+    };
+    const changeRest = (str, value) => {
+        const newUpdate = {
+            grid: gridRest,
+            latestGames: LGRest,
+            countdown: countdownRest,
+            numQuestions: numQuestionsRest,
+        };
+        newUpdate[str] = value;
+        update(ref(db, "profiles"), { rest: newUpdate });
+    };
 
     const changeGridAlpha = () => {
         setGridAlpha(!gridAlpha);
-        /* update(ref(db, "profiles"), {
-            alpha: { grid: !gridAlpha },
-        }); */
-		changeAlpha('countdown', !countdownAlpha)
+        changeAlpha("grid", !gridAlpha);
     };
     const changeGridBeta = () => {
         setGridBeta(!gridBeta);
-        update(ref(db, "profiles"), {
-            beta: { grid: !gridBeta },
-        });
+        changeBeta("grid", !gridBeta);
     };
     const changeGridPilots = () => {
         setGridPilots(!gridPilots);
-        update(ref(db, "profiles"), {
-            pilots: { grid: !gridPilots },
-        });
+        changePilots("grid", !gridPilots);
     };
     const changeGridRest = () => {
         setGridRest(!gridRest);
-        update(ref(db, "profiles"), {
-            rest: { grid: !gridRest },
-        });
+        changeRest("grid", !gridRest);
     };
     //latesGames functions
     const changeLGAlpha = () => {
         setLGAlpha(!LGAlpha);
-        update(ref(db, "profiles"), {
-            alpha: { latestGames: !LGAlpha },
-        });
+        changeAlpha("latestGames", !LGAlpha);
     };
     const changeLGBeta = () => {
         setLGBeta(!LGBeta);
-        update(ref(db, "profiles"), {
-            beta: { latestGames: !LGBeta },
-        });
+        changeBeta("latestGames", !LGBeta);
     };
     const changeLGPilots = () => {
         setLGPilots(!LGPilots);
-        update(ref(db, "profiles"), {
-            pilots: { latestGames: !LGPilots },
-        });
+        changePilots("latestGames", !LGPilots);
     };
     const changeLGRest = () => {
         setLGRest(!LGRest);
-        update(ref(db, "profiles"), {
-            rest: { latestGame: !LGRest },
-        });
+        changeRest("latestGames", !LGRest);
     };
     //countdown functions
-    const changeCountdownAlpha = () => setCountdownAlpha(!countdownAlpha);
-    const changeCountdownBeta = () => setCountdownBeta(!countdownBeta);
-    const changeCountdownPilots = () => setCountdownPilots(!countdownPilots);
-    const changeCountdownRest = () => setCountdownRest(!countdownRest);
+    const changeCountdownAlpha = () => {
+        setCountdownAlpha(!countdownAlpha);
+        changeAlpha("countdown", !countdownAlpha);
+    };
+    const changeCountdownBeta = () => {
+        setCountdownBeta(!countdownBeta);
+        changeBeta("countdown", !countdownBeta);
+    };
+    const changeCountdownPilots = () => {
+        setCountdownPilots(!countdownPilots);
+        changePilots("countdown", !countdownPilots);
+    };
+    const changeCountdownRest = () => {
+        setCountdownRest(!countdownRest);
+        changeRest("countdown", !countdownRest);
+    };
     //numQuestions functions
-    const changeNumQuestionsAlpha = () => setNumQuestionsAlpha(!numQuestionsAlpha);
-    const changeNumQuestionsBeta = () => setNumQuestionsBeta(!numQuestionsBeta);
-    const changeNumQuestionsPilots = () => setNumQuestionsPilots(!numQuestionsPilots);
-    const changeNumQuestionsRest = () => setNumQuestionsRest(!numQuestionsRest);
+    const changeNumQuestionsAlpha = () => {
+        setNumQuestionsAlpha(!numQuestionsAlpha);
+        changeAlpha("numQuestions", !numQuestionsAlpha);
+    };
+    const changeNumQuestionsBeta = () => {
+        setNumQuestionsBeta(!numQuestionsBeta);
+        changeBeta("numQuestions", !numQuestionsBeta);
+    };
+    const changeNumQuestionsPilots = () => {
+        setNumQuestionsPilots(!numQuestionsPilots);
+        changePilots("numQuestions", !numQuestionsPilots);
+    };
+    const changeNumQuestionsRest = () => {
+        setNumQuestionsRest(!numQuestionsRest);
+        changeRest("numQuestions", !numQuestionsRest);
+    };
     return (
         <div className="wrapper-advanced-settings">
             <div
