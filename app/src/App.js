@@ -707,9 +707,24 @@ const SetupAdvanced = () => {
             alpha: { latestGames: !LGAlpha },
         });
     };
-    const changeLGBeta = () => setLGBeta(!LGBeta);
-    const changeLGPilots = () => setLGPilots(!LGPilots);
-    const changeLGRest = () => setLGRest(!LGRest);
+    const changeLGBeta = () => {
+        setLGBeta(!LGBeta);
+        update(ref(db, "profiles"), {
+            beta: { latestGames: !LGBeta },
+        });
+    };
+    const changeLGPilots = () => {
+        setLGPilots(!LGPilots);
+        update(ref(db, "profiles"), {
+            pilots: { latestGames: !LGPilots },
+        });
+    };
+    const changeLGRest = () => {
+        setLGRest(!LGRest);
+        update(ref(db, "profiles"), {
+            rest: { latestGame: !LGRest },
+        });
+    };
     //countdown functions
     const changeCountdownAlpha = () => setCountdownAlpa(!countdownAlpha);
     const changeCountdownBeta = () => setCountdownBeta(!countdownBeta);
