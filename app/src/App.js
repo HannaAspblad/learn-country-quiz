@@ -738,42 +738,58 @@ const Setup = () => {
 const SetupAdvanced = () => {
     const [snapshot, loading, error] = useObject(ref(db, "profiles"));
     //Grids
-    const [gridAlpha, setGridAlpa] = useState(false);
+    const [gridAlpha, setGridAlpha] = useState(false);
     const [gridBeta, setGridBeta] = useState(false);
     const [gridPilots, setGridPilots] = useState(false);
     const [gridRest, setGridRest] = useState(false);
     //latestGames
-    const [LGAlpha, setLGAlpa] = useState(false);
+    //const [LGAlpha, setLGAlpha] = useState(false);
+	const [LGAlpha, setLGAlpha] = useState(false);
     const [LGBeta, setLGBeta] = useState(false);
     const [LGPilots, setLGPilots] = useState(false);
     const [LGRest, setLGRest] = useState(false);
     //countdown
-    const [countdownAlpha, setCountdownAlpa] = useState(false);
+    const [countdownAlpha, setCountdownAlpha] = useState(false);
     const [countdownBeta, setCountdownBeta] = useState(false);
     const [countdownPilots, setCountdownPilots] = useState(false);
     const [countdownRest, setCountdownRest] = useState(false);
     //numQuestions
-    const [numQuestionsAlpha, setNumQuestionsAlpa] = useState(false);
+    const [numQuestionsAlpha, setNumQuestionsAlpha] = useState(false);
     const [numQuestionsBeta, setNumQuestionsBeta] = useState(false);
     const [numQuestionsPilots, setNumQuestionsPilots] = useState(false);
     const [numQuestionsRest, setNumQuestionsRest] = useState(false);
     useEffect(() => {
         if (!loading) {
-            setGridAlpa(snapshot.val().alpha.grid);
+            setGridAlpha(snapshot.val().alpha.grid);
             setGridBeta(snapshot.val().beta.grid);
             setGridPilots(snapshot.val().pilots.grid);
             setGridRest(snapshot.val().rest.grid);
-            setLGAlpa(snapshot.val().alpha.latestGames);
+            /* setLGAlpha(snapshot.val().alpha.latestGames);
             setLGBeta(snapshot.val().beta.latestGame);
             setLGPilots(snapshot.val().pilots.latestGame);
-            setLGRest(snapshot.val().rest.latestGame);
+            setLGRest(snapshot.val().rest.latestGame); */
         }
     }, [snapshot]);
+
+	const changeAlpha = (str, value) => {
+		console.log(LGAlpha)
+		const newUpdate = {
+			grid: gridAlpha,
+			latestGames: LGAlpha,
+			countdown: countdownAlpha,
+			numQuestions: numQuestionsAlpha
+		}
+		newUpdate[str] = value
+		console.log(newUpdate)
+		update(ref(db, "profiles"), {alpha: newUpdate})
+	}
+
     const changeGridAlpha = () => {
-        setGridAlpa(!gridAlpha);
-        update(ref(db, "profiles"), {
+        setGridAlpha(!gridAlpha);
+        /* update(ref(db, "profiles"), {
             alpha: { grid: !gridAlpha },
-        });
+        }); */
+		changeAlpha('countdown', !countdownAlpha)
     };
     const changeGridBeta = () => {
         setGridBeta(!gridBeta);
@@ -795,7 +811,7 @@ const SetupAdvanced = () => {
     };
     //latesGames functions
     const changeLGAlpha = () => {
-        setLGAlpa(!LGAlpha);
+        setLGAlpha(!LGAlpha);
         update(ref(db, "profiles"), {
             alpha: { latestGames: !LGAlpha },
         });
@@ -804,12 +820,12 @@ const SetupAdvanced = () => {
     const changeLGPilots = () => setLGPilots(!LGPilots);
     const changeLGRest = () => setLGRest(!LGRest);
     //countdown functions
-    const changeCountdownAlpha = () => setCountdownAlpa(!countdownAlpha);
+    const changeCountdownAlpha = () => setCountdownAlpha(!countdownAlpha);
     const changeCountdownBeta = () => setCountdownBeta(!countdownBeta);
     const changeCountdownPilots = () => setCountdownPilots(!countdownPilots);
     const changeCountdownRest = () => setCountdownRest(!countdownRest);
     //numQuestions functions
-    const changeNumQuestionsAlpha = () => setNumQuestionsAlpa(!numQuestionsAlpha);
+    const changeNumQuestionsAlpha = () => setNumQuestionsAlpha(!numQuestionsAlpha);
     const changeNumQuestionsBeta = () => setNumQuestionsBeta(!numQuestionsBeta);
     const changeNumQuestionsPilots = () => setNumQuestionsPilots(!numQuestionsPilots);
     const changeNumQuestionsRest = () => setNumQuestionsRest(!numQuestionsRest);
