@@ -566,6 +566,7 @@ const Setup = () => {
     const [extraFlagsBtn, setExtraFlagsBtn] = useState(
         JSON.parse(localStorage.getItem("improvedFlagging"))
     );
+	const [profile, setProfile] = useState(localStorage.getItem("profile") || undefined)
 
     const changeQuestionState = () => {
         setQuestionBtn(!questionBtn);
@@ -594,6 +595,14 @@ const Setup = () => {
         localStorage.setItem(
             "improvedFlagging",
             !JSON.parse(localStorage.getItem("improvedFlagging"))
+        );
+    };
+
+	const changeProfileState = (str) => {
+        setProfile(str)
+        localStorage.setItem(
+            "profile",
+            str
         );
     };
 
@@ -774,6 +783,16 @@ const Setup = () => {
                     </button>
                 </div>
             </div>
+			<div className="profiles">
+				<h3>Chosen profile</h3>
+				<div className="profiles-wrapper">
+					<div style={profile == 'alpha'? {background: 'grey'}: {background: 'whitesmoke'}} onClick={() => changeProfileState('alpha')} className="profiles-item">Alpha</div>
+					<div style={profile == 'beta'? {background: 'grey'}: {background: 'whitesmoke'}} onClick={() => changeProfileState('beta')} className="profiles-item">Beta</div>
+					<div style={profile == 'pilots'? {background: 'grey'}: {background: 'whitesmoke'}} onClick={() => changeProfileState('pilots')} className="profiles-item">Pilots</div>
+					<div style={profile == 'rest'? {background: 'grey'}: {background: 'whitesmoke'}} onClick={() => changeProfileState('rest')} className="profiles-item">Rest</div>
+					<div style={profile == undefined? {background: 'grey'}: {background: 'whitesmoke'}} className="profiles-item">Not set</div>
+				</div>
+			</div>
             <div className="setup-footer" style={{ marginTop: "20%" }}>
                 <Link href="/" className="re-home link">
                     Go to app!

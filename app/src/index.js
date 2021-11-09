@@ -8,7 +8,14 @@ localStorage.setItem("improvedScoring", false);
 localStorage.setItem("improvedFlagging", false);
 localStorage.setItem("improvedResult", false);
 localStorage.setItem("improvedQuestions", false);
-/* localStorage.setItem("cookies", false); */
+if(!localStorage.getItem('profile')){
+    // 70% users profile = rest, 30% users profile pilots
+    const number = Math.floor(Math.random() * 10) + 1
+    let profile = ''
+    number < 7 ? profile = 'rest' : profile = 'pilots'
+    localStorage.setItem('profile', profile)
+    console.log(profile)
+}
 
 ReactDOM.render(
     <React.StrictMode>

@@ -270,3 +270,27 @@
   padding: 10px 15px;
   height: auto;
 }
+
+
+.profiles{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profiles-wrapper{
+  padding: 10px;
+  border: 1px solid gray;
+  display: flex;
+  width: 60%;
+  justify-content: space-evenly;
+}
+
+.profiles-item{
+  padding: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.profiles-item:hover{
+  font-weight: 700;
+}
