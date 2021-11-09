@@ -14,7 +14,6 @@ if(!localStorage.getItem('profile')){
     let profile = ''
     number < 7 ? profile = 'rest' : profile = 'pilots'
     localStorage.setItem('profile', profile)
-    console.log(profile)
 }
 
 ReactDOM.render(

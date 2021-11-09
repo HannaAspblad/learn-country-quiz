@@ -42,6 +42,8 @@ const db = getDatabase(app);
 function App() {
     const [showCookieBanner, setShowCookieBanner] = useState(true);
     const [cookies, setCookie] = useCookies(["user"]);
+	const [profile, setProfile] = useState(localStorage.getItem('profile') || undefined)
+	const [snapshot, loading, error] = useObject(ref(db, `profiles/${profile}/background`));
 
     useEffect(() => {
         //analyticsCookies ? analytics = getAnalytics(app) : analytics = null;
@@ -59,6 +61,7 @@ function App() {
                 }
             }
         }
+		
     }, [showCookieBanner]);
 
     return (
@@ -90,7 +93,7 @@ function App() {
                     <HelloWorld />
                 </Route>
             </div>
-            <div className="footer"> </div>
+            <div className="footer" style={!loading?{background: snapshot.val()}:{background: 'royalblue'}}> </div>
         </div>
     );
 }
