@@ -35,8 +35,7 @@ const firebaseConfig = {
 let analyticsCookies = false
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-let analytics = null
-analyticsCookies ? analytics = getAnalytics(app) : analytics = null;
+let analytics
 //const analytics = getAnalytics(app);
 
 const db = getDatabase(app);
@@ -45,19 +44,19 @@ function App() {
 	const [cookies, setCookie] = useCookies(["user"]);
 
 	useEffect(() => {
-		console.log(cookies)
-		/* if(cookies){
+		//analyticsCookies ? analytics = getAnalytics(app) : analytics = null;
+		if(cookies){
 			if(cookies.cookiesConsent){
 				setShowCookieBanner(false)
 				if(cookies.cookiesConsent.setting == 'All'){
 					analyticsCookies = true
+					analyticsCookies ? analytics = getAnalytics(app) : analytics = null;
+					//location.reload()
 				} else {
 					analyticsCookies = false
-			}
-			} else {
-				setShowCookieBanner(true)
-			}			
-		} */	
+				}
+			}		
+		}
 	}, [showCookieBanner])
 
     return (
@@ -430,6 +429,7 @@ const Cookies = (props) => {
             "cookiesConsent",
             { user: "AI", date: Date(), setting: "All", method: "Pushed_Allow" }
         );
+		location.reload()
     };
 
 	const acceptBasicCookies = async () => {
@@ -481,18 +481,15 @@ const Cookies = (props) => {
     );
 };
 
-const HelloWorld = () => {
+const HelloWorld = () => { //byt namn
 
 	return (
 		<div className="cookie-page-wrapper">
 			<h1>Cookies</h1>
 			<h2>Use of cookies by The Flag Game</h2>
 			<p>Cookies are small text files that are placed on your computer by websites that you visit. They are widely used in order to make websites work, or work more efficiently, as well as to provide information to the owners of the site. The table below explains the cookies we use and why.</p>
-			{/* grid columns 3 * rows = antal cookies + headers */}
-
-			{/* Cookie, Name, Purpose */}
 			<div className="cookie-grid-container">
-				<div className="cookie-grid-item">Cookie</div>
+				 <div className="cookie-grid-item">Cookie</div>
 				<div className="cookie-grid-item">Name</div>
 				<div className="cookie-grid-item">Purpose</div>
 				<div className="cookie-grid-item"><p>Cookie preference</p></div>
