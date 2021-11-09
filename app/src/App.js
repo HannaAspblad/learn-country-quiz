@@ -805,6 +805,11 @@ const SetupAdvanced = () => {
     const [numQuestionsBeta, setNumQuestionsBeta] = useState(false);
     const [numQuestionsPilots, setNumQuestionsPilots] = useState(false);
     const [numQuestionsRest, setNumQuestionsRest] = useState(false);
+	//backgrounds
+	const [backgroundAlpha, setBackgroundAlpha] = useState(String);
+    const [backgroundBeta, setBackgroundBeta] = useState(String);
+    const [backgroundPilots, setBackgroundPilots] = useState(String);
+    const [backgroundRest, setBackgroundRest] = useState(String);
     useEffect(() => {
         if (!loading) {
             setGridAlpha(snapshot.val().alpha.grid);
@@ -823,6 +828,10 @@ const SetupAdvanced = () => {
             setNumQuestionsBeta(snapshot.val().beta.numQuestions);
             setNumQuestionsPilots(snapshot.val().pilots.numQuestions);
             setNumQuestionsRest(snapshot.val().rest.numQuestions);
+			setBackgroundAlpha(snapshot.val().alpha.background);
+            setBackgroundBeta(snapshot.val().beta.background);
+            setBackgroundPilots(snapshot.val().pilots.background);
+            setBackgroundRest(snapshot.val().rest.background);
         }
     }, [snapshot]);
 
@@ -934,6 +943,23 @@ const SetupAdvanced = () => {
         setNumQuestionsRest(!numQuestionsRest);
         changeRest("numQuestions", !numQuestionsRest);
     };
+	//background functions
+	const changeBackgroundAlpha = (str) => {
+        setBackgroundAlpha(str);
+        changeAlpha("background", str);
+    };
+	const changeBackgroundBeta = (str) => {
+        setBackgroundBeta(str);
+        changeBeta("background", str);
+    };
+	const changeBackgroundPilots = (str) => {
+        setBackgroundPilots(str);
+        changePilots("background", str);
+    };
+	const changeBackgroundRest = (str) => {
+        setBackgroundRest(str);
+        changeRest("background", str);
+    };
     return (
         <div className="wrapper-advanced-settings">
             <div
@@ -1020,22 +1046,27 @@ const SetupAdvanced = () => {
                     </button>
                 </div>
                 <div className="grid-item">
+					{/* Alpha */}
                     <div className="color-palette">
                         <div
+							onClick={() => changeBackgroundAlpha("rgb(76,110,245)")}
                             className="palette-part"
-                            style={{ background: "rgb(76,110,245)" }}
+                            style={backgroundAlpha == "rgb(76,110,245)"?{ background: "rgb(76,110,245)" }: {background: "rgb(215,223,253)"}}
                         ></div>
                         <div
+							onClick={() => changeBackgroundAlpha("rgb(250,176,5)")}
                             className="palette-part"
-                            style={{ background: "rgb(253,233,186)" }}
+                            style={backgroundAlpha == "rgb(250,176,5)"?{ background: "rgb(250,176,5)"}: {background: "rgb(253,233,186)"}}
                         ></div>
                         <div
+							onClick={() => changeBackgroundAlpha("rgb(250,82,82)")}
                             className="palette-part"
-                            style={{ background: "rgb(254,224,224)" }}
+                            style={backgroundAlpha == "rgb(250,82,82)"?{background:"rgb(250,82,82)"}:{ background: "rgb(254,224,224)" }}
                         ></div>
                         <div
+							onClick={() => changeBackgroundAlpha("rgb(130,201,30)")}
                             className="palette-part"
-                            style={{ background: "rgb(224,242,201)" }}
+                            style={backgroundAlpha == "rgb(130,201,30)"?{background: "rgb(130,201,30)"}:{ background: "rgb(224,242,201)" }}
                         ></div>
                     </div>
                 </div>
@@ -1091,22 +1122,27 @@ const SetupAdvanced = () => {
                     </button>
                 </div>
                 <div className="grid-item">
+					{/* Beta */}
                     <div className="color-palette">
                         <div
+							onClick={() => changeBackgroundBeta("rgb(76,110,245)")}
                             className="palette-part"
-                            style={{ background: "rgb(215,223,253)" }}
+                            style={backgroundBeta == "rgb(76,110,245)"?{ background: "rgb(76,110,245)" }: {background: "rgb(215,223,253)"}}
                         ></div>
                         <div
+							onClick={() => changeBackgroundBeta("rgb(250,176,5)")}
                             className="palette-part"
-                            style={{ background: "rgb(250,176,5)" }}
+                            style={backgroundBeta == "rgb(250,176,5)"?{ background: "rgb(250,176,5)"}: {background: "rgb(253,233,186)"}}
                         ></div>
                         <div
+							onClick={() => changeBackgroundBeta("rgb(250,82,82)")}
                             className="palette-part"
-                            style={{ background: "rgb(254,210,210)" }}
+                            style={backgroundBeta == "rgb(250,82,82)"?{background:"rgb(250,82,82)"}:{ background: "rgb(254,224,224)" }}
                         ></div>
                         <div
+							onClick={() => changeBackgroundBeta("rgb(130,201,30)")}
                             className="palette-part"
-                            style={{ background: "rgb(224,242,201)" }}
+                            style={backgroundBeta == "rgb(130,201,30)"?{background: "rgb(130,201,30)"}:{ background: "rgb(224,242,201)" }}
                         ></div>
                     </div>
                 </div>
@@ -1162,22 +1198,27 @@ const SetupAdvanced = () => {
                     </button>
                 </div>
                 <div className="grid-item">
+					{/* Pilots */}
                     <div className="color-palette">
-                        <div
+					<div
+							onClick={() => changeBackgroundPilots("rgb(76,110,245)")}
                             className="palette-part"
-                            style={{ background: "rgb(215,223,253)" }}
+                            style={backgroundPilots == "rgb(76,110,245)"?{ background: "rgb(76,110,245)" }: {background: "rgb(215,223,253)"}}
                         ></div>
                         <div
+							onClick={() => changeBackgroundPilots("rgb(250,176,5)")}
                             className="palette-part"
-                            style={{ background: "rgb(253,233,186)" }}
+                            style={backgroundPilots == "rgb(250,176,5)"?{ background: "rgb(250,176,5)"}: {background: "rgb(253,233,186)"}}
                         ></div>
                         <div
+							onClick={() => changeBackgroundPilots("rgb(250,82,82)")}
                             className="palette-part"
-                            style={{ background: "rgb(250,82,82)" }}
+                            style={backgroundPilots == "rgb(250,82,82)"?{background:"rgb(250,82,82)"}:{ background: "rgb(254,224,224)" }}
                         ></div>
                         <div
+							onClick={() => changeBackgroundPilots("rgb(130,201,30)")}
                             className="palette-part"
-                            style={{ background: "rgb(224,242,201)" }}
+                            style={backgroundPilots == "rgb(130,201,30)"?{background: "rgb(130,201,30)"}:{ background: "rgb(224,242,201)" }}
                         ></div>
                     </div>
                 </div>
@@ -1233,25 +1274,30 @@ const SetupAdvanced = () => {
                     </button>
                 </div>
                 <div className="grid-item">
-                    <div className="color-palette">
-                        <div
+					{/* Rest */}
+					<div className="color-palette">
+                    <div
+							onClick={() => changeBackgroundRest("rgb(76,110,245)")}
                             className="palette-part"
-                            style={{ background: "rgb(215,223,253)" }}
+                            style={backgroundRest == "rgb(76,110,245)"?{ background: "rgb(76,110,245)" }: {background: "rgb(215,223,253)"}}
                         ></div>
                         <div
+							onClick={() => changeBackgroundRest("rgb(250,176,5)")}
                             className="palette-part"
-                            style={{ background: "rgb(253,233,186)" }}
+                            style={backgroundRest == "rgb(250,176,5)"?{ background: "rgb(250,176,5)"}: {background: "rgb(253,233,186)"}}
                         ></div>
                         <div
+							onClick={() => changeBackgroundRest("rgb(250,82,82)")}
                             className="palette-part"
-                            style={{ background: "rgb(254,210,210)" }}
+                            style={backgroundRest == "rgb(250,82,82)"?{background:"rgb(250,82,82)"}:{ background: "rgb(254,224,224)" }}
                         ></div>
                         <div
+							onClick={() => changeBackgroundRest("rgb(130,201,30)")}
                             className="palette-part"
-                            style={{ background: "rgb(130,201,30)" }}
+                            style={backgroundRest == "rgb(130,201,30)"?{background: "rgb(130,201,30)"}:{ background: "rgb(224,242,201)" }}
                         ></div>
-                    </div>
                 </div>
+				</div>
             </div>
 
             <div
