@@ -97,7 +97,7 @@ function App() {
             <div
                 className="footer"
                 style={
-                    !loading
+                    !loading || error
                         ? { background: snapshot.val() }
                         : { background: "royalblue" }
                 }
@@ -575,7 +575,7 @@ const Setup = () => {
     const [extraFlagsBtn, setExtraFlagsBtn] = useState(
         JSON.parse(localStorage.getItem("improvedFlagging"))
     );
-    const [profile, setProfile] = useState(localStorage.getItem("profile") || undefined);
+    const [profile, setProfile] = useState(localStorage.getItem("profile") || null);
 
     const changeQuestionState = () => {
         setQuestionBtn(!questionBtn);
@@ -611,6 +611,11 @@ const Setup = () => {
         setProfile(str);
         localStorage.setItem("profile", str);
     };
+
+	const removeProfile = () => {
+		setProfile(null)
+		localStorage.removeItem('profile')
+	}
 
     return (
         <div
@@ -838,12 +843,12 @@ const Setup = () => {
                     </div>
                     <div
                         style={
-                            profile == undefined
+                            profile == null
                                 ? { background: "grey" }
                                 : { background: "whitesmoke" }
                         }
                         className="profiles-item"
-                    >
+						onClick={removeProfile}>
                         Not set
                     </div>
                 </div>
