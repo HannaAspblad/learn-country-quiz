@@ -15,9 +15,11 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics, logEvent } from "firebase/analytics";
 import { ref, getDatabase, set, update } from "firebase/database";
 import { useObject } from "react-firebase-hooks/database";
+//LogRocket
+import LogRocket from "logrocket";
+LogRocket.init("lca3wl/learn-country-quiz");
 
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvxyz", 5);
-
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -42,8 +44,10 @@ const db = getDatabase(app);
 function App() {
     const [showCookieBanner, setShowCookieBanner] = useState(true);
     const [cookies, setCookie] = useCookies(["user"]);
-	const [profile, setProfile] = useState(localStorage.getItem('profile') || undefined)
-	const [snapshot, loading, error] = useObject(ref(db, `profiles/${profile}/background`));
+    const [profile, setProfile] = useState(localStorage.getItem("profile") || undefined);
+    const [snapshot, loading, error] = useObject(
+        ref(db, `profiles/${profile}/background`)
+    );
 
     useEffect(() => {
         //analyticsCookies ? analytics = getAnalytics(app) : analytics = null;
@@ -61,7 +65,6 @@ function App() {
                 }
             }
         }
-		
     }, [showCookieBanner]);
 
     return (
@@ -93,7 +96,16 @@ function App() {
                     <HelloWorld />
                 </Route>
             </div>
-            <div className="footer" style={!loading?{background: snapshot.val()}:{background: 'royalblue'}}> </div>
+            <div
+                className="footer"
+                style={
+                    !loading
+                        ? { background: snapshot.val() }
+                        : { background: "royalblue" }
+                }
+            >
+                {" "}
+            </div>
         </div>
     );
 }
@@ -569,7 +581,7 @@ const Setup = () => {
     const [extraFlagsBtn, setExtraFlagsBtn] = useState(
         JSON.parse(localStorage.getItem("improvedFlagging"))
     );
-	const [profile, setProfile] = useState(localStorage.getItem("profile") || undefined)
+    const [profile, setProfile] = useState(localStorage.getItem("profile") || undefined);
 
     const changeQuestionState = () => {
         setQuestionBtn(!questionBtn);
@@ -601,12 +613,9 @@ const Setup = () => {
         );
     };
 
-	const changeProfileState = (str) => {
-        setProfile(str)
-        localStorage.setItem(
-            "profile",
-            str
-        );
+    const changeProfileState = (str) => {
+        setProfile(str);
+        localStorage.setItem("profile", str);
     };
 
     return (
@@ -786,16 +795,65 @@ const Setup = () => {
                     </button>
                 </div>
             </div>
-			<div className="profiles">
-				<h3>Chosen profile</h3>
-				<div className="profiles-wrapper">
-					<div style={profile == 'alpha'? {background: 'grey'}: {background: 'whitesmoke'}} onClick={() => changeProfileState('alpha')} className="profiles-item">Alpha</div>
-					<div style={profile == 'beta'? {background: 'grey'}: {background: 'whitesmoke'}} onClick={() => changeProfileState('beta')} className="profiles-item">Beta</div>
-					<div style={profile == 'pilots'? {background: 'grey'}: {background: 'whitesmoke'}} onClick={() => changeProfileState('pilots')} className="profiles-item">Pilots</div>
-					<div style={profile == 'rest'? {background: 'grey'}: {background: 'whitesmoke'}} onClick={() => changeProfileState('rest')} className="profiles-item">Rest</div>
-					<div style={profile == undefined? {background: 'grey'}: {background: 'whitesmoke'}} className="profiles-item">Not set</div>
-				</div>
-			</div>
+            <div className="profiles">
+                <h3>Chosen profile</h3>
+                <div className="profiles-wrapper">
+                    <div
+                        style={
+                            profile == "alpha"
+                                ? { background: "grey" }
+                                : { background: "whitesmoke" }
+                        }
+                        onClick={() => changeProfileState("alpha")}
+                        className="profiles-item"
+                    >
+                        Alpha
+                    </div>
+                    <div
+                        style={
+                            profile == "beta"
+                                ? { background: "grey" }
+                                : { background: "whitesmoke" }
+                        }
+                        onClick={() => changeProfileState("beta")}
+                        className="profiles-item"
+                    >
+                        Beta
+                    </div>
+                    <div
+                        style={
+                            profile == "pilots"
+                                ? { background: "grey" }
+                                : { background: "whitesmoke" }
+                        }
+                        onClick={() => changeProfileState("pilots")}
+                        className="profiles-item"
+                    >
+                        Pilots
+                    </div>
+                    <div
+                        style={
+                            profile == "rest"
+                                ? { background: "grey" }
+                                : { background: "whitesmoke" }
+                        }
+                        onClick={() => changeProfileState("rest")}
+                        className="profiles-item"
+                    >
+                        Rest
+                    </div>
+                    <div
+                        style={
+                            profile == undefined
+                                ? { background: "grey" }
+                                : { background: "whitesmoke" }
+                        }
+                        className="profiles-item"
+                    >
+                        Not set
+                    </div>
+                </div>
+            </div>
             <div className="setup-footer" style={{ marginTop: "20%" }}>
                 <Link href="/" className="re-home link">
                     Go to app!
@@ -827,8 +885,8 @@ const SetupAdvanced = () => {
     const [numQuestionsBeta, setNumQuestionsBeta] = useState(false);
     const [numQuestionsPilots, setNumQuestionsPilots] = useState(false);
     const [numQuestionsRest, setNumQuestionsRest] = useState(false);
-	//backgrounds
-	const [backgroundAlpha, setBackgroundAlpha] = useState(String);
+    //backgrounds
+    const [backgroundAlpha, setBackgroundAlpha] = useState(String);
     const [backgroundBeta, setBackgroundBeta] = useState(String);
     const [backgroundPilots, setBackgroundPilots] = useState(String);
     const [backgroundRest, setBackgroundRest] = useState(String);
@@ -850,7 +908,7 @@ const SetupAdvanced = () => {
             setNumQuestionsBeta(snapshot.val().beta.numQuestions);
             setNumQuestionsPilots(snapshot.val().pilots.numQuestions);
             setNumQuestionsRest(snapshot.val().rest.numQuestions);
-			setBackgroundAlpha(snapshot.val().alpha.background);
+            setBackgroundAlpha(snapshot.val().alpha.background);
             setBackgroundBeta(snapshot.val().beta.background);
             setBackgroundPilots(snapshot.val().pilots.background);
             setBackgroundRest(snapshot.val().rest.background);
@@ -965,20 +1023,20 @@ const SetupAdvanced = () => {
         setNumQuestionsRest(!numQuestionsRest);
         changeRest("numQuestions", !numQuestionsRest);
     };
-	//background functions
-	const changeBackgroundAlpha = (str) => {
+    //background functions
+    const changeBackgroundAlpha = (str) => {
         setBackgroundAlpha(str);
         changeAlpha("background", str);
     };
-	const changeBackgroundBeta = (str) => {
+    const changeBackgroundBeta = (str) => {
         setBackgroundBeta(str);
         changeBeta("background", str);
     };
-	const changeBackgroundPilots = (str) => {
+    const changeBackgroundPilots = (str) => {
         setBackgroundPilots(str);
         changePilots("background", str);
     };
-	const changeBackgroundRest = (str) => {
+    const changeBackgroundRest = (str) => {
         setBackgroundRest(str);
         changeRest("background", str);
     };
@@ -1068,27 +1126,43 @@ const SetupAdvanced = () => {
                     </button>
                 </div>
                 <div className="grid-item">
-					{/* Alpha */}
+                    {/* Alpha */}
                     <div className="color-palette">
                         <div
-							onClick={() => changeBackgroundAlpha("rgb(76,110,245)")}
+                            onClick={() => changeBackgroundAlpha("rgb(76,110,245)")}
                             className="palette-part"
-                            style={backgroundAlpha == "rgb(76,110,245)"?{ background: "rgb(76,110,245)" }: {background: "rgb(215,223,253)"}}
+                            style={
+                                backgroundAlpha == "rgb(76,110,245)"
+                                    ? { background: "rgb(76,110,245)" }
+                                    : { background: "rgb(215,223,253)" }
+                            }
                         ></div>
                         <div
-							onClick={() => changeBackgroundAlpha("rgb(250,176,5)")}
+                            onClick={() => changeBackgroundAlpha("rgb(250,176,5)")}
                             className="palette-part"
-                            style={backgroundAlpha == "rgb(250,176,5)"?{ background: "rgb(250,176,5)"}: {background: "rgb(253,233,186)"}}
+                            style={
+                                backgroundAlpha == "rgb(250,176,5)"
+                                    ? { background: "rgb(250,176,5)" }
+                                    : { background: "rgb(253,233,186)" }
+                            }
                         ></div>
                         <div
-							onClick={() => changeBackgroundAlpha("rgb(250,82,82)")}
+                            onClick={() => changeBackgroundAlpha("rgb(250,82,82)")}
                             className="palette-part"
-                            style={backgroundAlpha == "rgb(250,82,82)"?{background:"rgb(250,82,82)"}:{ background: "rgb(254,224,224)" }}
+                            style={
+                                backgroundAlpha == "rgb(250,82,82)"
+                                    ? { background: "rgb(250,82,82)" }
+                                    : { background: "rgb(254,224,224)" }
+                            }
                         ></div>
                         <div
-							onClick={() => changeBackgroundAlpha("rgb(130,201,30)")}
+                            onClick={() => changeBackgroundAlpha("rgb(130,201,30)")}
                             className="palette-part"
-                            style={backgroundAlpha == "rgb(130,201,30)"?{background: "rgb(130,201,30)"}:{ background: "rgb(224,242,201)" }}
+                            style={
+                                backgroundAlpha == "rgb(130,201,30)"
+                                    ? { background: "rgb(130,201,30)" }
+                                    : { background: "rgb(224,242,201)" }
+                            }
                         ></div>
                     </div>
                 </div>
@@ -1144,27 +1218,43 @@ const SetupAdvanced = () => {
                     </button>
                 </div>
                 <div className="grid-item">
-					{/* Beta */}
+                    {/* Beta */}
                     <div className="color-palette">
                         <div
-							onClick={() => changeBackgroundBeta("rgb(76,110,245)")}
+                            onClick={() => changeBackgroundBeta("rgb(76,110,245)")}
                             className="palette-part"
-                            style={backgroundBeta == "rgb(76,110,245)"?{ background: "rgb(76,110,245)" }: {background: "rgb(215,223,253)"}}
+                            style={
+                                backgroundBeta == "rgb(76,110,245)"
+                                    ? { background: "rgb(76,110,245)" }
+                                    : { background: "rgb(215,223,253)" }
+                            }
                         ></div>
                         <div
-							onClick={() => changeBackgroundBeta("rgb(250,176,5)")}
+                            onClick={() => changeBackgroundBeta("rgb(250,176,5)")}
                             className="palette-part"
-                            style={backgroundBeta == "rgb(250,176,5)"?{ background: "rgb(250,176,5)"}: {background: "rgb(253,233,186)"}}
+                            style={
+                                backgroundBeta == "rgb(250,176,5)"
+                                    ? { background: "rgb(250,176,5)" }
+                                    : { background: "rgb(253,233,186)" }
+                            }
                         ></div>
                         <div
-							onClick={() => changeBackgroundBeta("rgb(250,82,82)")}
+                            onClick={() => changeBackgroundBeta("rgb(250,82,82)")}
                             className="palette-part"
-                            style={backgroundBeta == "rgb(250,82,82)"?{background:"rgb(250,82,82)"}:{ background: "rgb(254,224,224)" }}
+                            style={
+                                backgroundBeta == "rgb(250,82,82)"
+                                    ? { background: "rgb(250,82,82)" }
+                                    : { background: "rgb(254,224,224)" }
+                            }
                         ></div>
                         <div
-							onClick={() => changeBackgroundBeta("rgb(130,201,30)")}
+                            onClick={() => changeBackgroundBeta("rgb(130,201,30)")}
                             className="palette-part"
-                            style={backgroundBeta == "rgb(130,201,30)"?{background: "rgb(130,201,30)"}:{ background: "rgb(224,242,201)" }}
+                            style={
+                                backgroundBeta == "rgb(130,201,30)"
+                                    ? { background: "rgb(130,201,30)" }
+                                    : { background: "rgb(224,242,201)" }
+                            }
                         ></div>
                     </div>
                 </div>
@@ -1220,27 +1310,43 @@ const SetupAdvanced = () => {
                     </button>
                 </div>
                 <div className="grid-item">
-					{/* Pilots */}
+                    {/* Pilots */}
                     <div className="color-palette">
-					<div
-							onClick={() => changeBackgroundPilots("rgb(76,110,245)")}
+                        <div
+                            onClick={() => changeBackgroundPilots("rgb(76,110,245)")}
                             className="palette-part"
-                            style={backgroundPilots == "rgb(76,110,245)"?{ background: "rgb(76,110,245)" }: {background: "rgb(215,223,253)"}}
+                            style={
+                                backgroundPilots == "rgb(76,110,245)"
+                                    ? { background: "rgb(76,110,245)" }
+                                    : { background: "rgb(215,223,253)" }
+                            }
                         ></div>
                         <div
-							onClick={() => changeBackgroundPilots("rgb(250,176,5)")}
+                            onClick={() => changeBackgroundPilots("rgb(250,176,5)")}
                             className="palette-part"
-                            style={backgroundPilots == "rgb(250,176,5)"?{ background: "rgb(250,176,5)"}: {background: "rgb(253,233,186)"}}
+                            style={
+                                backgroundPilots == "rgb(250,176,5)"
+                                    ? { background: "rgb(250,176,5)" }
+                                    : { background: "rgb(253,233,186)" }
+                            }
                         ></div>
                         <div
-							onClick={() => changeBackgroundPilots("rgb(250,82,82)")}
+                            onClick={() => changeBackgroundPilots("rgb(250,82,82)")}
                             className="palette-part"
-                            style={backgroundPilots == "rgb(250,82,82)"?{background:"rgb(250,82,82)"}:{ background: "rgb(254,224,224)" }}
+                            style={
+                                backgroundPilots == "rgb(250,82,82)"
+                                    ? { background: "rgb(250,82,82)" }
+                                    : { background: "rgb(254,224,224)" }
+                            }
                         ></div>
                         <div
-							onClick={() => changeBackgroundPilots("rgb(130,201,30)")}
+                            onClick={() => changeBackgroundPilots("rgb(130,201,30)")}
                             className="palette-part"
-                            style={backgroundPilots == "rgb(130,201,30)"?{background: "rgb(130,201,30)"}:{ background: "rgb(224,242,201)" }}
+                            style={
+                                backgroundPilots == "rgb(130,201,30)"
+                                    ? { background: "rgb(130,201,30)" }
+                                    : { background: "rgb(224,242,201)" }
+                            }
                         ></div>
                     </div>
                 </div>
@@ -1296,30 +1402,46 @@ const SetupAdvanced = () => {
                     </button>
                 </div>
                 <div className="grid-item">
-					{/* Rest */}
-					<div className="color-palette">
-                    <div
-							onClick={() => changeBackgroundRest("rgb(76,110,245)")}
+                    {/* Rest */}
+                    <div className="color-palette">
+                        <div
+                            onClick={() => changeBackgroundRest("rgb(76,110,245)")}
                             className="palette-part"
-                            style={backgroundRest == "rgb(76,110,245)"?{ background: "rgb(76,110,245)" }: {background: "rgb(215,223,253)"}}
+                            style={
+                                backgroundRest == "rgb(76,110,245)"
+                                    ? { background: "rgb(76,110,245)" }
+                                    : { background: "rgb(215,223,253)" }
+                            }
                         ></div>
                         <div
-							onClick={() => changeBackgroundRest("rgb(250,176,5)")}
+                            onClick={() => changeBackgroundRest("rgb(250,176,5)")}
                             className="palette-part"
-                            style={backgroundRest == "rgb(250,176,5)"?{ background: "rgb(250,176,5)"}: {background: "rgb(253,233,186)"}}
+                            style={
+                                backgroundRest == "rgb(250,176,5)"
+                                    ? { background: "rgb(250,176,5)" }
+                                    : { background: "rgb(253,233,186)" }
+                            }
                         ></div>
                         <div
-							onClick={() => changeBackgroundRest("rgb(250,82,82)")}
+                            onClick={() => changeBackgroundRest("rgb(250,82,82)")}
                             className="palette-part"
-                            style={backgroundRest == "rgb(250,82,82)"?{background:"rgb(250,82,82)"}:{ background: "rgb(254,224,224)" }}
+                            style={
+                                backgroundRest == "rgb(250,82,82)"
+                                    ? { background: "rgb(250,82,82)" }
+                                    : { background: "rgb(254,224,224)" }
+                            }
                         ></div>
                         <div
-							onClick={() => changeBackgroundRest("rgb(130,201,30)")}
+                            onClick={() => changeBackgroundRest("rgb(130,201,30)")}
                             className="palette-part"
-                            style={backgroundRest == "rgb(130,201,30)"?{background: "rgb(130,201,30)"}:{ background: "rgb(224,242,201)" }}
+                            style={
+                                backgroundRest == "rgb(130,201,30)"
+                                    ? { background: "rgb(130,201,30)" }
+                                    : { background: "rgb(224,242,201)" }
+                            }
                         ></div>
+                    </div>
                 </div>
-				</div>
             </div>
 
             <div
