@@ -17,7 +17,7 @@ import { ref, getDatabase, set, update } from "firebase/database";
 import { useObject } from "react-firebase-hooks/database";
 //LogRocket
 import LogRocket from "logrocket";
-LogRocket.init("lca3wl/learn-country-quiz");
+
 
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvxyz", 5);
 // Your web app's Firebase configuration
@@ -38,7 +38,6 @@ let analyticsCookies = false;
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 let analytics;
-//const analytics = getAnalytics(app);
 
 const db = getDatabase(app);
 function App() {
@@ -50,16 +49,15 @@ function App() {
     );
 
     useEffect(() => {
-        //analyticsCookies ? analytics = getAnalytics(app) : analytics = null;
         if (cookies) {
             if (cookies.cookiesConsent) {
                 setShowCookieBanner(false);
                 if (cookies.cookiesConsent.setting == "All") {
+					LogRocket.init("lca3wl/learn-country-quiz");
                     analyticsCookies = true;
                     analyticsCookies
                         ? (analytics = getAnalytics(app))
                         : (analytics = null);
-                    //location.reload()
                 } else {
                     analyticsCookies = false;
                 }
@@ -93,7 +91,7 @@ function App() {
                     <SetupAdvanced />
                 </Route>
                 <Route path="/cookies">
-                    <HelloWorld />
+                    <CookiePage />
                 </Route>
             </div>
             <div
@@ -440,7 +438,6 @@ const Cookies = (props) => {
     const [showButtonBasic, setShowButtonBasic] = useState(true);
 
     const acceptAllCookies = async () => {
-        console.log("all");
         props.showBanner();
         setCookie("cookiesConsent", {
             user: "AI",
@@ -461,10 +458,8 @@ const Cookies = (props) => {
         });
     };
 
-    const dismiss = async (e) => {
-        console.log(e.target);
-        e.preventDefault();
-        //props.showBanner();
+    const dismiss = async () => {
+        props.showBanner();
         setCookie("cookiesConsent", {
             user: "AI",
             date: Date(),
@@ -474,8 +469,8 @@ const Cookies = (props) => {
     };
 
     return (
-        <div className="cookie-banner-backdrop">
-            <div className="cookie-content">
+        <div className="cookie-banner-backdrop" onClick={dismiss}>
+            <div className="cookie-content" onClick={e => e.stopPropagation()}>
                 {<img src={cookieImg} />}
                 <h2>Our website uses cookies</h2>
                 <p>
@@ -528,8 +523,7 @@ const Cookies = (props) => {
     );
 };
 
-const HelloWorld = () => {
-    //byt namn
+const CookiePage = () => {
 
     return (
         <div className="cookie-page-wrapper">
@@ -886,10 +880,10 @@ const SetupAdvanced = () => {
     const [numQuestionsPilots, setNumQuestionsPilots] = useState(false);
     const [numQuestionsRest, setNumQuestionsRest] = useState(false);
     //backgrounds
-    const [backgroundAlpha, setBackgroundAlpha] = useState(String);
-    const [backgroundBeta, setBackgroundBeta] = useState(String);
-    const [backgroundPilots, setBackgroundPilots] = useState(String);
-    const [backgroundRest, setBackgroundRest] = useState(String);
+    const [backgroundAlpha, setBackgroundAlpha] = useState("rgb(76,110,245)");
+    const [backgroundBeta, setBackgroundBeta] = useState("rgb(76,110,245)");
+    const [backgroundPilots, setBackgroundPilots] = useState("rgb(76,110,245)");
+    const [backgroundRest, setBackgroundRest] = useState("rgb(76,110,245)");
     useEffect(() => {
         if (!loading) {
             setGridAlpha(snapshot.val().alpha.grid);
@@ -921,6 +915,7 @@ const SetupAdvanced = () => {
             latestGames: LGAlpha,
             countdown: countdownAlpha,
             numQuestions: numQuestionsAlpha,
+			background: backgroundAlpha
         };
         newUpdate[str] = value;
         update(ref(db, "profiles"), { alpha: newUpdate });
@@ -931,6 +926,7 @@ const SetupAdvanced = () => {
             latestGames: LGBeta,
             countdown: countdownBeta,
             numQuestions: numQuestionsBeta,
+			background: backgroundBeta
         };
         newUpdate[str] = value;
         update(ref(db, "profiles"), { beta: newUpdate });
@@ -941,6 +937,7 @@ const SetupAdvanced = () => {
             latestGames: LGPilots,
             countdown: countdownPilots,
             numQuestions: numQuestionsPilots,
+			background: backgroundPilots
         };
         newUpdate[str] = value;
         update(ref(db, "profiles"), { pilots: newUpdate });
@@ -951,6 +948,7 @@ const SetupAdvanced = () => {
             latestGames: LGRest,
             countdown: countdownRest,
             numQuestions: numQuestionsRest,
+			background: backgroundRest
         };
         newUpdate[str] = value;
         update(ref(db, "profiles"), { rest: newUpdate });
