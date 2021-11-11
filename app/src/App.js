@@ -18,7 +18,6 @@ import { useObject } from "react-firebase-hooks/database";
 //LogRocket
 import LogRocket from "logrocket";
 
-
 const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvxyz", 5);
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -53,7 +52,7 @@ function App() {
             if (cookies.cookiesConsent) {
                 setShowCookieBanner(false);
                 if (cookies.cookiesConsent.setting == "All") {
-					LogRocket.init("lca3wl/learn-country-quiz");
+                    // LogRocket.init("lca3wl/learn-country-quiz");
                     analyticsCookies = true;
                     analyticsCookies
                         ? (analytics = getAnalytics(app))
@@ -268,10 +267,13 @@ const GamePage = ({ gameId, playerId }) => {
 
 const QuestionPage = ({ gameId, playerId }) => {
     const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`));
+    const [snapshotAlt, loadingAlt, errorAlt] = useObject(
+        ref(db, `profiles/${localStorage.getItem("profile")}`)
+    );
     const [improvedScoring, setImprovedScoring] = useState(
         JSON.parse(localStorage.getItem("improvedScoring"))
     );
-
+    const [gridDisplay, setGridDisplay] = useState(false);
     if (loading) return <div className="fw6 fs5">Loading...</div>;
     const game = snapshot.val();
 
@@ -279,7 +281,11 @@ const QuestionPage = ({ gameId, playerId }) => {
     const opponentKey = `player${parseInt(playerId) === 1 ? 2 : 1}`;
 
     const question = game.questions[`${game.currentQuestion}`];
+    // useEffect(() => {
+    //         if(!loading) {
 
+    //         }
+    // },[])
     if (!question) return "Loading...";
     const answer = async (countryCode) => {
         if (question.fastest) return;
@@ -309,7 +315,6 @@ const QuestionPage = ({ gameId, playerId }) => {
             await update(ref(db), updates2);
         }
     };
-
     return (
         <div className="page">
             <div className="f32">
@@ -330,6 +335,36 @@ const QuestionPage = ({ gameId, playerId }) => {
                     return (
                         <div
                             className={`button alt ${correct && "alt-green"} ${
+                                correct === false && "alt-red"
+                            }`}
+                            key={countryCode}
+                            title={countryCode}
+                            onClick={() => answer(countryCode)}
+                        >
+                            {countries[countryCode.toUpperCase()]}
+                            {}
+                            {youOrOpponent && (
+                                <div className="alt-label">{youOrOpponent}</div>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+            <div className="alternatives display-grid-option">
+                {Object.entries(question.alternatives).map(([k, countryCode]) => {
+                    let correct = null;
+                    let youOrOpponent = false;
+                    if (question.fastest && question.fastest.answer == countryCode) {
+                        correct = question.fastest.answer === question.correct;
+                        if (question.fastest.player === playerId) {
+                            youOrOpponent = `YOU ${correct ? " +1" : ""}`;
+                        } else {
+                            youOrOpponent = `OPPONENT ${correct ? " +1" : ""}`;
+                        }
+                    }
+                    return (
+                        <div
+                            className={`button alt alt-option ${correct && "alt-green"} ${
                                 correct === false && "alt-red"
                             }`}
                             key={countryCode}
@@ -470,7 +505,7 @@ const Cookies = (props) => {
 
     return (
         <div className="cookie-banner-backdrop" onClick={dismiss}>
-            <div className="cookie-content" onClick={e => e.stopPropagation()}>
+            <div className="cookie-content" onClick={(e) => e.stopPropagation()}>
                 {<img src={cookieImg} />}
                 <h2>Our website uses cookies</h2>
                 <p>
@@ -524,7 +559,6 @@ const Cookies = (props) => {
 };
 
 const CookiePage = () => {
-
     return (
         <div className="cookie-page-wrapper">
             <h1>Cookies</h1>
@@ -612,10 +646,10 @@ const Setup = () => {
         localStorage.setItem("profile", str);
     };
 
-	const removeProfile = () => {
-		setProfile(null)
-		localStorage.removeItem('profile')
-	}
+    const removeProfile = () => {
+        setProfile(null);
+        localStorage.removeItem("profile");
+    };
 
     return (
         <div
@@ -848,7 +882,8 @@ const Setup = () => {
                                 : { background: "whitesmoke" }
                         }
                         className="profiles-item"
-						onClick={removeProfile}>
+                        onClick={removeProfile}
+                    >
                         Not set
                     </div>
                 </div>
@@ -920,7 +955,7 @@ const SetupAdvanced = () => {
             latestGames: LGAlpha,
             countdown: countdownAlpha,
             numQuestions: numQuestionsAlpha,
-			background: backgroundAlpha
+            background: backgroundAlpha,
         };
         newUpdate[str] = value;
         update(ref(db, "profiles"), { alpha: newUpdate });
@@ -931,7 +966,7 @@ const SetupAdvanced = () => {
             latestGames: LGBeta,
             countdown: countdownBeta,
             numQuestions: numQuestionsBeta,
-			background: backgroundBeta
+            background: backgroundBeta,
         };
         newUpdate[str] = value;
         update(ref(db, "profiles"), { beta: newUpdate });
@@ -942,7 +977,7 @@ const SetupAdvanced = () => {
             latestGames: LGPilots,
             countdown: countdownPilots,
             numQuestions: numQuestionsPilots,
-			background: backgroundPilots
+            background: backgroundPilots,
         };
         newUpdate[str] = value;
         update(ref(db, "profiles"), { pilots: newUpdate });
@@ -953,7 +988,7 @@ const SetupAdvanced = () => {
             latestGames: LGRest,
             countdown: countdownRest,
             numQuestions: numQuestionsRest,
-			background: backgroundRest
+            background: backgroundRest,
         };
         newUpdate[str] = value;
         update(ref(db, "profiles"), { rest: newUpdate });
