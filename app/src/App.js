@@ -648,6 +648,47 @@ const CookiePage = () => {
             user’s preference will be stored in this cookie.
           </p>
         </div>
+        <div className="cookie-grid-item">
+          <p>Analytics, Google</p>
+        </div>
+        <div className="cookie-grid-item">
+          <p>_ga, _ga*</p>
+        </div>
+        <div className="cookie-grid-item">
+          <p>
+          These cookies are used to collect information about how visitors use our website. We use the information to compile reports and to help us improve the website.
+          </p>
+        </div>
+        <div className="cookie-grid-item">
+          <p>Analytics, Log Rocket</p>
+        </div>
+        <div className="cookie-grid-item">
+          <p>_lr_hb_*, _lr_uf_*, _lr_tabs_*</p>
+        </div>
+        <div className="cookie-grid-item">
+          <p>
+          These cookies are used to collect information about how visitors use our website. We use the information to compile reports and to help us improve the website.
+          </p>
+        </div>
+      </div>
+      <div className="cookie-grid-container">
+        <div className="cookie-grid-item">Sub Processor</div>
+        <div className="cookie-grid-item">Website</div>
+        <div className="cookie-grid-item"></div>
+        <div className="cookie-grid-item">
+          <p>Google Analytics</p>
+        </div>
+        <div className="cookie-grid-item">
+            <p><a href="https://analytics.google.com/">analytics.google.com</a></p>
+        </div>
+        <div className="cookie-grid-item"></div>
+        <div className="cookie-grid-item">
+          <p>Log Rocket</p>
+        </div>
+        <div className="cookie-grid-item">
+            <p><a href="https://logrocket.com/">logrocket.com</a></p>
+        </div>
+        <div className="cookie-grid-item"></div>
       </div>
       <div className="cookie-page-footer" style={{ marginTop: "20%" }}>
         <Link href="/" className="re-home link">
