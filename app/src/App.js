@@ -13,7 +13,7 @@ import { useCookies } from "react-cookie";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics, logEvent } from "firebase/analytics";
-import { ref, getDatabase, set, update } from "firebase/database";
+import { ref, getDatabase, set, update, orderByValue } from "firebase/database";
 import { useObject } from "react-firebase-hooks/database";
 //LogRocket
 import LogRocket from "logrocket";
@@ -117,6 +117,8 @@ const StartPage = (props) => {
     const [snapshotAlt, loadingAlt, errorAlt] = useObject(
         ref(db, `profiles/${props.profile}`)
     );
+    const [snapshotLatest, loadingLatest, errorLatest] = useObject(ref(db, "games", orderByValue('finishTime')));
+    if(!loadingLatest) console.log(snapshotLatest.val())
     const [location, setLocation] = useLocation();
     const [numberOfQuestions, setNumberOfQuestions] = useState(false);
     let countriesArr = Object.keys(countries);
@@ -129,6 +131,16 @@ const StartPage = (props) => {
         }
         randomizeCountries.push(newCountries);
     }
+
+    const latestGamesArr = []
+    if(!loadingLatest){
+        console.log(Object.entries(snapshotLatest.val()))
+        for(let i = 0; i < 3; i++){
+            latestGamesArr.push(Object.values(snapshotLatest.val())[i])
+        }
+    }
+    console.log(latestGamesArr)
+
 
     if (loading) return <div className="fw6 fs5">Loading...</div>;
     const nextGame = snapshot.val();
@@ -269,6 +281,12 @@ const StartPage = (props) => {
                         )}
                     </div>
                 )}
+            
+            {!loadingLatest && 
+                <div className="latest-games">
+                <h3>Latest Games</h3>
+                {latestGamesArr.map((game) => (<p>Player 1 {game.score.player1} - {game.score.player2} Player 2</p>))}
+            </div>}
         </div>
     );
 };
@@ -365,6 +383,7 @@ const QuestionPage = ({ gameId, playerId, profile }) => {
             await utils.sleep(3000);
             const updates2 = {};
             updates2[`/games/${gameId}/status`] = "finished";
+            updates2[`/games/${gameId}/finishTime`] = Date()
             await update(ref(db), updates2);
         }
     };
