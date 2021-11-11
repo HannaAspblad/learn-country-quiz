@@ -17,7 +17,7 @@ Done | Step | Grading
 ✅ | 6 - [Add Google analytics](6-google-analytics.md) | **G**
 ✅ | 7 - [Advanced feature flags](7-advanced-feature-flags.md) | **VG**
 ✅ | 8 - [New features and A/B testing](8-new-features-and-ab-testing.md) | **VG**
-⬜ | 9 - [Improvement suggestions](9-suggest-improvements.md) | **VG**
+✅ | 9 - [Improvement suggestions](9-suggest-improvements.md) | **VG**
 ⬜ | 10 - [Implement suggestions](10-implement-suggestions.md) | **Optional task**
 
 
