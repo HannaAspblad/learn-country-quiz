@@ -120,6 +120,7 @@ const StartPage = (props) => {
     const [snapshotLatest, loadingLatest, errorLatest] = useObject(
         ref(db, "games", orderByValue("finishTime"))
     );
+
     const [location, setLocation] = useLocation();
     const [numberOfQuestions, setNumberOfQuestions] = useState(false);
     let countriesArr = Object.keys(countries);
@@ -135,11 +136,16 @@ const StartPage = (props) => {
 
     const latestGamesArr = [];
     if (!loadingLatest) {
-        for (let i = 0; i < 3; i++) {
-            latestGamesArr.push(Object.values(snapshotLatest.val())[i]);
+        if (Object.entries(snapshotLatest.val()).length <= 3) {
+            for (let i = 0; i < Object.entries(snapshotLatest.val()).length; i++) {
+                latestGamesArr.push(Object.values(snapshotLatest.val())[i]);
+            }
+        } else {
+            for (let i = 0; i < 3; i++) {
+                latestGamesArr.push(Object.values(snapshotLatest.val())[i]);
+            }
         }
     }
-
     if (loading) return <div className="fw6 fs5">Loading...</div>;
     const nextGame = snapshot.val();
     const play = async () => {
@@ -280,16 +286,19 @@ const StartPage = (props) => {
                     </div>
                 )}
 
-            {!loadingLatest && snapshotAlt.val().latestGames && (
-                <div className="latest-games">
-                    <h3>Latest Games</h3>
-                    {latestGamesArr.map((game, i) => (
-                        <p key={i}>
-                            Player 1 {game.score.player1} - {game.score.player2} Player 2
-                        </p>
-                    ))}
-                </div>
-            )}
+            {!loadingLatest &&
+                snapshotAlt.val().latestGames !== undefined &&
+                snapshotLatest.val() && (
+                    <div className="latest-games">
+                        <h3>Latest Games</h3>
+                        {latestGamesArr.map((game, i) => (
+                            <p key={i}>
+                                Player 1 {game.score.player1} - {game.score.player2}{" "}
+                                Player 2
+                            </p>
+                        ))}
+                    </div>
+                )}
         </div>
     );
 };

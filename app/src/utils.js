@@ -1,55 +1,53 @@
 import countries from "./countries.js";
 
 const hardCodedQuestions = {
-  1: {
-    alternatives: {
-      1: "swe",
-      2: "fra",
-      3: "dnk",
-      4: "bra",
+    1: {
+        alternatives: {
+            1: "swe",
+            2: "fra",
+            3: "dnk",
+            4: "bra",
+        },
+        correct: "swe",
     },
-    correct: "swe",
-  },
-  2: {
-    alternatives: {
-      1: "blz",
-      2: "fra",
-      3: "cub",
-      4: "cog",
+    2: {
+        alternatives: {
+            1: "blz",
+            2: "fra",
+            3: "cub",
+            4: "cog",
+        },
+        correct: "fra",
     },
-    correct: "fra",
-  },
 };
 
 const generateQuestion = () => {
-  let countriesArr = Object.keys(countries);
-  const randomizeCountries = [];
-  for (let i = 0; i < 54; i++) {
-    let newCountries =
-      countriesArr[Math.floor(Math.random() * 200)].toLowerCase();
-    if (randomizeCountries.includes(newCountries)) {
-      newCountries =
-        countriesArr[Math.floor(Math.random() * 200)].toLowerCase();
+    let countriesArr = Object.keys(countries);
+    const randomizeCountries = [];
+    for (let i = 0; i < 54; i++) {
+        let newCountries = countriesArr[Math.floor(Math.random() * 200)].toLowerCase();
+        if (randomizeCountries.includes(newCountries)) {
+            newCountries = countriesArr[Math.floor(Math.random() * 200)].toLowerCase();
+        }
+        randomizeCountries.push(newCountries);
     }
-    randomizeCountries.push(newCountries);
-  }
 
-  const currentCountries = [
-    randomizeCountries[0],
-    randomizeCountries[1],
-    randomizeCountries[2],
-    randomizeCountries[3],
-  ];
-  const question = {};
-  question.correct =
-    currentCountries[Math.floor(Math.random() * currentCountries.length)];
-  question.alternatives = {};
-  for (let i = 1; i <= currentCountries.length; i++) {
-    !currentCountries[i]
-      ? (question.alternatives[i] = currentCountries[0])
-      : (question.alternatives[i] = currentCountries[i]);
-  }
-  return question;
+    const currentCountries = [
+        randomizeCountries[0],
+        randomizeCountries[1],
+        randomizeCountries[2],
+        randomizeCountries[3],
+    ];
+    const question = {};
+    question.correct =
+        currentCountries[Math.floor(Math.random() * currentCountries.length)];
+    question.alternatives = {};
+    for (let i = 1; i <= currentCountries.length; i++) {
+        !currentCountries[i]
+            ? (question.alternatives[i] = currentCountries[0])
+            : (question.alternatives[i] = currentCountries[i]);
+    }
+    return question;
 };
 
 // for(let i = 1; i <= 5; i++){
@@ -57,33 +55,34 @@ const generateQuestion = () => {
 // }
 
 export const createGame = (str, numberOfQuestions) => {
-  const quizQuestions = {};
-  const defaultGeneratedQuestions = 5;
-  let generatedQuestions;
+    const quizQuestions = {};
+    const defaultGeneratedQuestions = 5;
+    let generatedQuestions;
 
-  str == "standardQuestion" ? (generatedQuestions = hardCodedQuestions) : "";
+    str == "standardQuestion" ? (generatedQuestions = hardCodedQuestions) : "";
 
-  str === "improvedQuestions" && !numberOfQuestions
-    ? (numberOfQuestions = defaultGeneratedQuestions)
-    : (generatedQuestions = hardCodedQuestions);
+    str === "improvedQuestions" && !numberOfQuestions
+        ? (numberOfQuestions = defaultGeneratedQuestions)
+        : (generatedQuestions = hardCodedQuestions);
 
-  str === "improvedQuestions" && numberOfQuestions
-    ? (generatedQuestions = quizQuestions)
-    : (generatedQuestions = hardCodedQuestions);
+    str === "improvedQuestions" && numberOfQuestions
+        ? (generatedQuestions = quizQuestions)
+        : (generatedQuestions = hardCodedQuestions);
 
-  for (let i = 1; i <= numberOfQuestions; i++) {
-    quizQuestions[i] = generateQuestion();
-  }
-  //console.log(str);
+    for (let i = 1; i <= numberOfQuestions; i++) {
+        quizQuestions[i] = generateQuestion();
+    }
+    //console.log(str);
 
-  // const generatedQuestions = hardCodedQuestions;
+    // const generatedQuestions = hardCodedQuestions;
 
-  return {
-    currentQuestion: 1,
-    questions: generatedQuestions,
-    score: { player1: 0, player2: 0 },
-    status: "starting",
-  };
+    return {
+        currentQuestion: 1,
+        questions: generatedQuestions,
+        score: { player1: 0, player2: 0 },
+        status: "starting",
+        countdown: 3,
+    };
 };
 
 export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
