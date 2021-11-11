@@ -39,6 +39,7 @@ const app = initializeApp(firebaseConfig);
 let analytics;
 
 const db = getDatabase(app);
+
 function App() {
     const [showCookieBanner, setShowCookieBanner] = useState(true);
     const [cookies, setCookie] = useCookies(["user"]);
@@ -52,7 +53,7 @@ function App() {
             if (cookies.cookiesConsent) {
                 setShowCookieBanner(false);
                 if (cookies.cookiesConsent.setting == "All") {
-                    // LogRocket.init("lca3wl/learn-country-quiz");
+                    LogRocket.init("lca3wl/learn-country-quiz");
                     analyticsCookies = true;
                     analyticsCookies
                         ? (analytics = getAnalytics(app))
@@ -69,7 +70,7 @@ function App() {
             <div className="header">THE FLAG GAME</div>
             <div className="middle">
                 <Route path="/">
-                    <StartPage />
+                    <StartPage profile={profile} />
                     {showCookieBanner && (
                         <Cookies
                             showBanner={() => setShowCookieBanner(!showCookieBanner)}
@@ -79,7 +80,11 @@ function App() {
                 <Route path="/game/:gameId/:playerId">
                     {(params) => {
                         return (
-                            <GamePage gameId={params.gameId} playerId={params.playerId} />
+                            <GamePage
+                                gameId={params.gameId}
+                                playerId={params.playerId}
+                                profile={profile}
+                            />
                         );
                     }}
                 </Route>
@@ -107,9 +112,13 @@ function App() {
     );
 }
 
-const StartPage = () => {
+const StartPage = (props) => {
     const [snapshot, loading, error] = useObject(ref(db, "nextGame"));
+    const [snapshotAlt, loadingAlt, errorAlt] = useObject(
+        ref(db, `profiles/${props.profile}`)
+    );
     const [location, setLocation] = useLocation();
+    const [numberOfQuestions, setNumberOfQuestions] = useState(false);
     let countriesArr = Object.keys(countries);
     const randomizeCountries = [];
 
@@ -135,10 +144,11 @@ const StartPage = () => {
                 logEvent(analytics, "game_started");
             }
             let game = null;
+
             if (JSON.parse(localStorage.getItem("improvedQuestions"))) {
-                game = utils.createGame("improvedQuestions");
+                game = utils.createGame("improvedQuestions", numberOfQuestions);
             } else {
-                game = utils.createGame("standardQuestion");
+                game = utils.createGame("standardQuestion", false);
             }
             const updates = {};
             updates["/nextGame"] = null;
@@ -150,6 +160,19 @@ const StartPage = () => {
             const updates2 = {};
             updates2[`/games/${nextGame}/status`] = "playing";
             await update(ref(db), updates2);
+        }
+    };
+    const validFeature = () => {
+        if (!loadingAlt) {
+            const profileFeature = snapshotAlt.val();
+            if (
+                profileFeature.numQuestions ==
+                JSON.parse(localStorage.getItem("improvedQuestions"))
+            ) {
+                return true;
+            } else {
+                return false;
+            }
         }
     };
     return (
@@ -224,11 +247,33 @@ const StartPage = () => {
             <div className="button btn-square" onClick={play}>
                 Play
             </div>
+
+            {validFeature(localStorage.getItem("profile"), "NumQuestions") &&
+                JSON.parse(localStorage.getItem("improvedQuestions")) && (
+                    <div>
+                        <p>Select number of questions for the next game</p>
+                        {JSON.parse(localStorage.getItem("improvedQuestions")) ? (
+                            <select
+                                onChange={(e) => setNumberOfQuestions(e.target.value)}
+                            >
+                                <option>Number of questions</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        ) : (
+                            <p>
+                                You need to switch on Generated questions in Setup to be
+                                able to change the amount of questions
+                            </p>
+                        )}
+                    </div>
+                )}
         </div>
     );
 };
 
-const GamePage = ({ gameId, playerId }) => {
+const GamePage = ({ gameId, playerId, profile }) => {
     const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`));
     const [location, setLocation] = useLocation();
 
@@ -246,7 +291,7 @@ const GamePage = ({ gameId, playerId }) => {
     };
 
     if (game && game.status === "playing")
-        return <QuestionPage gameId={gameId} playerId={playerId} />;
+        return <QuestionPage gameId={gameId} playerId={playerId} profile={profile} />;
     if (game && game.status === "finished")
         return <ResultsPage gameId={gameId} playerId={playerId} />;
 
@@ -265,15 +310,15 @@ const GamePage = ({ gameId, playerId }) => {
     );
 };
 
-const QuestionPage = ({ gameId, playerId }) => {
+const QuestionPage = ({ gameId, playerId, profile }) => {
     const [snapshot, loading, error] = useObject(ref(db, `games/${gameId}`));
     const [snapshotAlt, loadingAlt, errorAlt] = useObject(
-        ref(db, `profiles/${localStorage.getItem("profile")}`)
+        ref(db, `profiles/${profile}/grid`)
     );
     const [improvedScoring, setImprovedScoring] = useState(
         JSON.parse(localStorage.getItem("improvedScoring"))
     );
-    const [gridDisplay, setGridDisplay] = useState(false);
+
     if (loading) return <div className="fw6 fs5">Loading...</div>;
     const game = snapshot.val();
 
@@ -281,11 +326,7 @@ const QuestionPage = ({ gameId, playerId }) => {
     const opponentKey = `player${parseInt(playerId) === 1 ? 2 : 1}`;
 
     const question = game.questions[`${game.currentQuestion}`];
-    // useEffect(() => {
-    //         if(!loading) {
 
-    //         }
-    // },[])
     if (!question) return "Loading...";
     const answer = async (countryCode) => {
         if (question.fastest) return;
@@ -315,12 +356,17 @@ const QuestionPage = ({ gameId, playerId }) => {
             await update(ref(db), updates2);
         }
     };
+
     return (
         <div className="page">
             <div className="f32">
                 <div className={`flag ${question.correct}`}></div>
             </div>
-            <div className="alternatives">
+            <div
+                className={`alternatives ${
+                    !loadingAlt && snapshotAlt.val() && "display-grid-option"
+                }`}
+            >
                 {Object.entries(question.alternatives).map(([k, countryCode]) => {
                     let correct = null;
                     let youOrOpponent = false;
@@ -334,37 +380,9 @@ const QuestionPage = ({ gameId, playerId }) => {
                     }
                     return (
                         <div
-                            className={`button alt ${correct && "alt-green"} ${
-                                correct === false && "alt-red"
-                            }`}
-                            key={countryCode}
-                            title={countryCode}
-                            onClick={() => answer(countryCode)}
-                        >
-                            {countries[countryCode.toUpperCase()]}
-                            {}
-                            {youOrOpponent && (
-                                <div className="alt-label">{youOrOpponent}</div>
-                            )}
-                        </div>
-                    );
-                })}
-            </div>
-            <div className="alternatives display-grid-option">
-                {Object.entries(question.alternatives).map(([k, countryCode]) => {
-                    let correct = null;
-                    let youOrOpponent = false;
-                    if (question.fastest && question.fastest.answer == countryCode) {
-                        correct = question.fastest.answer === question.correct;
-                        if (question.fastest.player === playerId) {
-                            youOrOpponent = `YOU ${correct ? " +1" : ""}`;
-                        } else {
-                            youOrOpponent = `OPPONENT ${correct ? " +1" : ""}`;
-                        }
-                    }
-                    return (
-                        <div
-                            className={`button alt alt-option ${correct && "alt-green"} ${
+                            className={`button alt ${
+                                !loadingAlt && snapshotAlt.val() && "alt-option"
+                            } ${correct && "alt-green"} ${
                                 correct === false && "alt-red"
                             }`}
                             key={countryCode}
