@@ -328,7 +328,19 @@ const QuestionPage = ({ gameId, playerId, profile }) => {
     const question = game.questions[`${game.currentQuestion}`];
 
     if (!question) return "Loading...";
+    let answerTimeStart = performance.now()
+    if(question) logEvent(analytics, "answer_time_start");
     const answer = async (countryCode) => {
+        let answerTimeGrid = performance.now()
+        let answerTimeStacked = performance.now()
+        if(snapshotAlt.val() == true){
+            let totTimeGrid = (answerTimeGrid - answerTimeStart )/ 1000
+            logEvent(analytics, "answer_time_grid", totTimeGrid)
+        } else{
+            let totTimeStacked = (answerTimeStacked - answerTimeStart )/ 1000
+            logEvent(analytics, "answer_time_stacked", totTimeStacked)
+        }
+       
         if (question.fastest) return;
 
         const updates = {};
