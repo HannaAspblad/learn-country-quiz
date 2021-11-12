@@ -82,6 +82,7 @@ export const createGame = (str, numberOfQuestions) => {
         score: { player1: 0, player2: 0 },
         status: "starting",
         countdown: 3,
+        finishTime: Date(),
     };
 };
 
